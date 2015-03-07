@@ -10,6 +10,7 @@ System.config({
 System.config({
   "map": {
     "bootstrap": "github:twbs/bootstrap@3.3.2",
+    "d3": "github:mbostock/d3@3.5.5",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },

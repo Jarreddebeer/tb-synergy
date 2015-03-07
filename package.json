@@ -26,7 +26,8 @@
       "packages": "public/jspm_packages"
     },
     "dependencies": {
-      "bootstrap": "github:twbs/bootstrap@^3.3.2"
+      "bootstrap": "github:twbs/bootstrap@^3.3.2",
+      "d3": "github:mbostock/d3@^3.5.5"
     }
   }
 }
