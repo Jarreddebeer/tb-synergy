@@ -19,7 +19,8 @@
 ### Useful bits
 FIC := Fractional inhibitory concentration
 MIC := minimum inhibitory concentrations
-FIC index = `FIX_x + FIC_y = \frac{X}{MIC_x} + \frac{Y}{MIC_y}`
+FIC index = `FIX_x + FIC_y = \frac{X}{MIC_x} + \frac{Y}{MIC_y}` where `X,Y` are
+the dosages of drugs x,y.
 
 ## Determination of minimum inhibitory concentrations
 
