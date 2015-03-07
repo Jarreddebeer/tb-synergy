@@ -1,0 +1,123 @@
+<html lang="en">
+<head>
+
+    <!-- page loading css only -->
+    <style>
+        body {
+            margin: 0;
+        }
+        body.loading {
+            background: #EFEFEF;
+        }
+        body #loading {
+            display: none;
+            width: 100%;
+            position: absolute;
+            top: 50%;
+            margin-top: -10px;
+            text-align: center;
+        }
+        body.loading #loading {
+            display: block;
+        }
+        body.loading #app {
+            display: none;
+        }
+    </style>
+    <!-- end page loading css -->
+
+    <!-- to be refactored out -->
+    <style>
+        #graph-1 {
+            background: #EFEFEF;
+            height: 350px;
+        }
+        #graph-2 {
+            background: #DDD;
+            height: 175px;
+        }
+        #graph-3 {
+            background: #CCC;
+            height: 175px;
+        }
+        #filters {
+            background: #BBB;
+            height: 100px;
+        }
+        #column-left, #column-right {
+            background: #AAA;
+            height: 550px;
+        }
+    </style>
+
+</head>
+<body class="loading">
+
+<div id="loading">Loading...</div>
+
+<div id="app">
+<header class="navbar navbar-static-top" id="top" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="../" class="navbar-brand">TB Synergy Visualisation</a>
+    </div>
+    <nav>
+      <ul class="nav navbar-nav"></ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="/about">About</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="row">
+    <div class="col-sm-2" id="column-left">
+        #column-left
+    </div>
+    <div class="col-sm-8">
+        <div class="row">
+            <div class="col-sm-6" id="graph-1">
+                #graph-1
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-12" id="graph-2">
+                        #graph-2
+                    </div>
+                    <div class="col-sm-12" id="graph-3">
+                        #graph-3
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12" id="filters">
+                #filters
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-2" id="column-right">
+        #column-right
+    </div>
+</div>
+</div>
+
+<script src="jspm_packages/system.js"></script>
+<script src="config.js"></script>
+<script>
+    System.import('lib/main').then(function() {
+        // remove 'loading' class on body.
+        // this will display the app
+        document.getElementsByTagName('body')[0].className = "";
+    }, function(e) {
+        // this uses a promise, which swallows errors
+        // so this should ensure errors get logged.
+        console.log(e.stack);
+    });
+</script>
+
+</body>
+
+</html>
