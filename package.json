@@ -28,6 +28,7 @@
     "dependencies": {
       "bootstrap": "github:twbs/bootstrap@^3.3.2",
       "d3": "github:mbostock/d3@^3.5.5",
+      "jsx": "github:floatdrop/plugin-jsx@^1.0.1",
       "react": "npm:react@^0.12.2"
     }
   }
