@@ -18,19 +18,23 @@ d3Chart.create = function(el, props, state) {
       .attr("transform", "translate(0," + this.props.height + ")")
     .append("text")
       .attr("class", "label")
-      .attr("x", this.props.width - this.props.margins.left - this.props.margins.right)
-      .attr("y", -6)
-      .style("text-anchor", "end")
-      .text("fic");
+      .attr("x", (this.props.width/2))
+      .attr("y", this.props.margins.bottom - 10)
+      .style("text-anchor", "middle")
+      .style("font-size",15)
+      .text("FIC");
 
   svg.append("g")
       .attr("id", "scatterplot-y-axis")
     .append("text")
       .attr("class", "label")
       .attr("transform", "rotate(-90)")
-      .attr("y", 6)
+      .attr("y", -(this.props.margins.left) + 15)
+      .attr("x", -(this.props.height - this.props.margins.top -
+                  this.props.margins.bottom)/2)
       .attr("dy", ".71em")
-      .style("text-anchor", "end")
+      .style("font-size",15)
+      .style("text-anchor", "middle")
       .text("Luminosity")
 
   var tooltip = d3.select("body").append("div")
@@ -113,12 +117,30 @@ d3Chart.update = function(el, state) {
           d3.select(".y-tooltip").html(that._formatNumber(d.lumo))
                .style("left", (window.pageXOffset + yMatrix.e - 50) + "px")
                .style("top", top - 10 + "px");
+          that.props.svg.append("svg:line")
+              .attr("class", "x-drop-line")
+              .attr("x1", d3.select(this).attr("cx"))
+              .attr("x2", d3.select(this).attr("cx"))
+              .attr("y1", d3.select(this).attr("cy"))
+              .attr("y2", that.props.height)
+              .attr("stroke",d3.select(this).style("fill"))
+              .attr("stroke-width","2");
+          that.props.svg.append("svg:line")
+              .attr("class", "y-drop-line")
+              .attr("x1", 0)
+              .attr("x2", d3.select(this).attr("cx"))
+              .attr("y1", d3.select(this).attr("cy"))
+              .attr("y2", d3.select(this).attr("cy"))
+              .attr("stroke",d3.select(this).style("fill"))
+              .attr("stroke-width","2");
          circ.transition()
             .duration(200)
             .style("fill-opacity", 1) // TODO: move to CSS
             .attr("r", 10);
       })
       .on("mouseout", function(d) {
+          d3.selectAll(".x-drop-line").remove();
+          d3.selectAll(".y-drop-line").remove();
           d3.select(".tooltip").transition()
                .duration(500)
                .style("opacity", 0);

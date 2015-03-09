@@ -12,7 +12,7 @@ export default React.createClass({
     d3Chart.create(el, {
       width: 600,
       height: 400,
-      margins: {top: 20, right: 20, bottom: 30, left: 100},
+      margins: {top: 20, right: 20, bottom: 50, left: 100},
     }, this.getChartState());
   },
 
