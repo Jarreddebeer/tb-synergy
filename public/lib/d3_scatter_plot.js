@@ -88,7 +88,6 @@ d3Chart.update = function(el, state) {
                 +this.getAttribute("cy"));
       var otherMatrix = this.getScreenCTM()
                 .translate(+this.getAttribute("cx"),that.props.height);
-         console.log(otherMatrix);
          var left = (window.pageXOffset + matrix.e)
          var top =  (window.pageYOffset + matrix.f)
           d3.select(".tooltip").transition()

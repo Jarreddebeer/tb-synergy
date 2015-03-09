@@ -25,7 +25,6 @@ var DataDisplay = React.createClass({
             }
         });
     });
-    console.log(ranges);
     return ranges;
   },
   
