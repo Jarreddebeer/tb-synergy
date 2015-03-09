@@ -36,14 +36,12 @@ var DataDisplay = React.createClass({
                 <Plate data={this.props.data} display_ranges={this.state.display_ranges} />
             </div>
             <div className="col-sm-6">
-                <div className="row">
-                    <div className="col-sm-12" id="graph-2">
+                    <div className="row" id="graph-2">
                         <ScatterPlot data={this.props.data} display_ranges={this.state.display_ranges} />
                     </div>
-                    <div className="col-sm-12" id="graph-3">
+                    <div className="row" id="graph-3">
                         <FicCurves data={this.props.data} display_ranges={this.state.display_ranges} />
                     </div>
-                </div>
             </div>
         </div>
         <div className="row">

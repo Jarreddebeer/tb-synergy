@@ -33,15 +33,15 @@ d3Chart.create = function(el, props, state) {
       .style("text-anchor", "end")
       .text("Luminosity")
 
-  var tooltip = d3.select(el).append("div")
+  var tooltip = d3.select("body").append("div")
       .attr("class", "tooltip tooltip-style")
       .style("opacity", 0);
 
-  var yTooltip = d3.select(el).append("div")
+  var yTooltip = d3.select("body").append("div")
       .attr("class", "y-tooltip small-tooltip-style")
       .style("opacity", 0);
 
-  var xTooltip = d3.select(el).append("div")
+  var xTooltip = d3.select("body").append("div")
       .attr("class", "x-tooltip small-tooltip-style")
       .style("opacity", 0);
 
@@ -86,10 +86,12 @@ d3Chart.update = function(el, state) {
       var matrix = this.getScreenCTM()
                 .translate(+this.getAttribute("cx"),
                 +this.getAttribute("cy"));
-      var otherMatrix = this.getScreenCTM()
-                .translate(+this.getAttribute("cx"),that.props.height);
-         var left = (window.pageXOffset + matrix.e)
-         var top =  (window.pageYOffset + matrix.f)
+      var xMatrix = this.getScreenCTM()
+                .translate(0,that.props.height);
+      var yMatrix = this.getScreenCTM()
+                .translate(0,0);
+         var left = matrix.e + window.pageXOffset
+         var top =  matrix.f + window.pageYOffset
           d3.select(".tooltip").transition()
                .duration(200)
                .style("opacity", .9);
@@ -104,13 +106,13 @@ d3Chart.update = function(el, state) {
                 "Drug B: " + that._formatNumber(d.b) + "<br/>" +
                 "Drug C: " + that._formatNumber(d.c) + "<br/>")
                .style("left", left + 10 + "px")
-               .style("top", (top - 70) + "px");
+               .style("top", top - 30+ "px");
           d3.select(".x-tooltip").html(that._formatNumber(d.fic))
-               .style("left", (left - 12) + "px")
-               .style("top", (window.pageYOffset + otherMatrix.f + 7) + "px");
+               .style("left", left - 15 + "px")
+               .style("top", (window.pageYOffset + xMatrix.f) + "px");
           d3.select(".y-tooltip").html(that._formatNumber(d.lumo))
-               .style("left", 43 + "px")
-               .style("top", (top - 10) + "px");
+               .style("left", (window.pageXOffset + yMatrix.e - 50) + "px")
+               .style("top", top - 10 + "px");
          circ.transition()
             .duration(200)
             .style("fill-opacity", 1) // TODO: move to CSS
