@@ -16,9 +16,6 @@
     "url": "https://github.com/Jarreddebeer/tb-synergy/issues"
   },
   "homepage": "https://github.com/Jarreddebeer/tb-synergy",
-  "dependencies": {
-    "jspm": "^0.14.0"
-  },
   "jspm": {
     "directories": {
       "baseURL": "public",
@@ -26,10 +23,19 @@
       "packages": "public/jspm_packages"
     },
     "dependencies": {
+      "jspm": "^0.14.0",
       "bootstrap": "github:twbs/bootstrap@^3.3.2",
       "d3": "github:mbostock/d3@^3.5.5",
       "jsx": "github:floatdrop/plugin-jsx@^1.0.1",
       "react": "npm:react@^0.12.2"
     }
+  },
+  "devDependencies": {
+    "connect": "^3.3.4",
+    "gulp": "^3.8.11",
+    "gulp-livereload": "^3.8.0",
+    "gulp-shell": "^0.3.0",
+    "gulp-watch": "^4.1.1",
+    "serve-static": "^1.9.1"
   }
 }
