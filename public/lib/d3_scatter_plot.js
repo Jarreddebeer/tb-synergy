@@ -32,11 +32,25 @@ d3Chart.create = function(el, props, state) {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Luminosity")
+
+  var tooltip = d3.select(el).append("div")
+      .attr("class", "tooltip tooltip-style")
+      .style("opacity", 0);
+
+  var yTooltip = d3.select(el).append("div")
+      .attr("class", "y-tooltip small-tooltip-style")
+      .style("opacity", 0);
+
+  var xTooltip = d3.select(el).append("div")
+      .attr("class", "x-tooltip small-tooltip-style")
+      .style("opacity", 0);
+
   this.props.svg = svg;
   this.update(el, state);
 };
 
 d3Chart.update = function(el, state) {
+    var that = this;
     var x = d3.scale.linear()
         .range([0, this.props.width]);
 
@@ -67,6 +81,58 @@ d3Chart.update = function(el, state) {
       .attr("cy", function(d) {
           return y(d.lumo);
       })
+      .on("mouseover", function(d) {
+      var circ = d3.select(this);
+      var matrix = this.getScreenCTM()
+                .translate(+this.getAttribute("cx"),
+                +this.getAttribute("cy"));
+      var otherMatrix = this.getScreenCTM()
+                .translate(+this.getAttribute("cx"),that.props.height);
+         console.log(otherMatrix);
+         var left = (window.pageXOffset + matrix.e)
+         var top =  (window.pageYOffset + matrix.f)
+          d3.select(".tooltip").transition()
+               .duration(200)
+               .style("opacity", .9);
+          d3.select(".x-tooltip").transition()
+               .duration(200)
+               .style("opacity", .9);
+          d3.select(".y-tooltip").transition()
+               .duration(200)
+               .style("opacity", .9);
+          d3.select(".tooltip").html(
+                "Drug A: " + that._formatNumber(d.a) + "<br/>" +
+                "Drug B: " + that._formatNumber(d.b) + "<br/>" +
+                "Drug C: " + that._formatNumber(d.c) + "<br/>")
+               .style("left", left + 10 + "px")
+               .style("top", (top - 70) + "px");
+          d3.select(".x-tooltip").html(that._formatNumber(d.fic))
+               .style("left", (left - 12) + "px")
+               .style("top", (window.pageYOffset + otherMatrix.f + 7) + "px");
+          d3.select(".y-tooltip").html(that._formatNumber(d.lumo))
+               .style("left", 43 + "px")
+               .style("top", (top - 10) + "px");
+         circ.transition()
+            .duration(200)
+            .style("fill-opacity", 1) // TODO: move to CSS
+            .attr("r", 10);
+      })
+      .on("mouseout", function(d) {
+          d3.select(".tooltip").transition()
+               .duration(500)
+               .style("opacity", 0);
+          d3.select(".x-tooltip").transition()
+               .duration(500)
+               .style("opacity", 0);
+          d3.select(".y-tooltip").transition()
+               .duration(500)
+               .style("opacity", 0);
+         d3.select(this).transition()
+            .duration(500)
+            .style("fill-opacity", 0.6) // TODO: move to CSS
+            .attr("r", 3.5);
+      })
+      .style("fill-opacity", 0.6) // TODO: move to CSS
       .style("fill", function(d) { return color(d.plate_num); });
 
   var legend = this.props.svg.selectAll(".legend")
@@ -91,5 +157,9 @@ d3Chart.update = function(el, state) {
 
 d3Chart.destroy = function(el) {
 };
+
+d3Chart._formatNumber = function(num) {
+    return Math.round(num*100)/100;
+}
 
 export default d3Chart;
