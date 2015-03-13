@@ -1,0 +1,50 @@
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+
+</head>
+
+<div id="app">
+<header class="navbar navbar-static-top" id="top" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="../" class="navbar-brand">TB Synergy Visualisation</a>
+    </div>
+    <nav>
+      <ul class="nav navbar-nav"></ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="/about">About</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div id="report-source" style="display: none;">
+title
+========
+</div>
+
+<div class="row">
+    <div id="report-markdown" class="col-sm-12"></div>
+</div>
+</div>
+
+<script src="lib/vendor/markdown.min.js"></script>
+<script>
+  function Editor(input, preview) {
+    this.update = function () {
+      preview.innerHTML = markdown.toHTML(input.textContent);
+    };
+    input.editor = this;
+    this.update();
+  }
+  var $ = function (id) { return document.getElementById(id); };
+  new Editor($("report-source"), $("report-markdown"));
+</script>
+
+</body>
+
+</html>
