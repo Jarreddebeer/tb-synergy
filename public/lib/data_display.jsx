@@ -1,3 +1,4 @@
+import $ from 'jquery'
 import React from "react"
 import d3 from "d3"
 import Plate from "./plates.jsx!"
@@ -27,7 +28,7 @@ var DataDisplay = React.createClass({
     });
     return ranges;
   },
-  
+
   render: function() {
     return (
     <div className="row">
@@ -65,7 +66,7 @@ function parseDrugData(row){
 d3.csv("data/drug_data.csv")
     .row(parseDrugData)
     .get(function(error, rows){
-        React.render(<DataDisplay data={rows}/>, 
+        React.render(<DataDisplay data={rows}/>,
             document.getElementById("data-display"));
     })
 export default DataDisplay;

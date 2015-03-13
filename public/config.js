@@ -330,6 +330,8 @@ System.config({
     "d3": "github:mbostock/d3@3.5.5",
     "jsx": "github:floatdrop/plugin-jsx@1.0.1",
     "react": "npm:react@0.12.2",
+    "three": "npm:three@0.70.0",
+    "three.regular.helvetiker": "npm:three.regular.helvetiker@1.0.0",
     "github:floatdrop/plugin-jsx@1.0.1": {
       "react-tools": "npm:react-tools@0.12.2"
     },
@@ -337,7 +339,7 @@ System.config({
       "assert": "npm:assert@1.3.0"
     },
     "github:jspm/nodelibs-buffer@0.1.0": {
-      "buffer": "npm:buffer@3.0.3"
+      "buffer": "npm:buffer@3.1.0"
     },
     "github:jspm/nodelibs-constants@0.1.0": {
       "constants-browserify": "npm:constants-browserify@0.0.1"
@@ -448,7 +450,7 @@ System.config({
       "parse-asn1": "npm:parse-asn1@2.0.0",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
-    "npm:buffer@3.0.3": {
+    "npm:buffer@3.1.0": {
       "base64-js": "npm:base64-js@0.0.8",
       "ieee754": "npm:ieee754@1.1.4",
       "is-array": "npm:is-array@1.0.1"
@@ -764,6 +766,10 @@ System.config({
     },
     "npm:string_decoder@0.10.31": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0"
+    },
+    "npm:three@0.70.0": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:through@2.3.6": {
       "process": "github:jspm/nodelibs-process@0.1.1",
