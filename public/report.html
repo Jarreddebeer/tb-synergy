@@ -38,20 +38,86 @@ FA was added at specific concentration for each of 4 plates while the fifth plat
 
 The values are fluorescence intensities from a green fluorescent protein (gfp) reporter that is expressed in the bacterium. The maximum signal (i.e. uninhibited growth) is set at a limit of 65000.
 
+Problem
+=======
+- status quo: drug combinations are only tested late in the drug discovery process
+- solution: test drug combinations from earliest point
+- new problem: TB is treated with combinations of 3 or 4 drugs at a time, visualising four dimensional data is difficult for those without CS degrees (and, it turns out, those with one too)
+
+Data
+=====
+![alt text][spreadsheet-data]
+
+Intensities of Green Flourescent Protein in bacterium on 6 plates, divided into cells.
+
+Each cell contains a range of dilutions of
+RIF, INH, each plate has a different dilution of FA.
+
+For computer scientists: 4-tuples, first three entries are dosages and the third is the drug’s “efficacy”. 
+
 Graphical representation of checkerboard assay
+
 ![alt text][graphical-representation-of-checkerboard-assay]
 
 ![alt text][drug-interaction-plates]
-![alt text][early-design-3d-bar-chart]
-![alt text][early-design-plate-iterations]
-![alt text][early-design-stacked-plates_01]
-![alt text][early-design-stacked-plates_02]
-![alt text][early-implementation-plates-stacked_01]
-![alt text][early-implementation-plates-stacked_02]
-![alt text][example-4d-visualisation_01]
-![alt text][example-4d-visualisation_02]
+
+4D surface visualisation in use
+
 ![alt text][example-4d-visualisation_03]
-![alt text][spreadsheet-data]
+
+Objective
+=========
+Overall: find the combination of drugs that provides the greatest effect at the lowest dosage.
+
+Two stages:
+- Data exploration: what happened?
+- Data presentation: how do I communicate it?
+
+Visual Queries
+==============
+- Where is the "frontier"? (values with the lowest dosage that's effective).
+- Which drugs are most effective on their own/in a pair?
+- Are there any adversarial interactions?
+- Is a drug active by itself?
+
+Existing Visualisations for high dimensional data
+=========
+
+![alt text][example-parallel-coordinate-plot]
+
+![alt text][example-star-plot]
+
+![alt text][example-4d-visualisation_01]
+
+![alt text][example-4d-visualisation_02]
+
+![alt text][example-4x4-plots]
+
+![alt text][example-abc]
+
+Our Ideas
+=========
+Use all the spatial dimensions to aid in data exploration.
+
+![alt text][early-design-stacked-plates_02]
+
+![alt text][early-design-3d-bar-chart]
+
+![alt text][early-design-3d-scatterplot]
+
+![alt text][early-design-plate-iterations]
+
+Use standard two dimensional charts to communicate this information effectively.
+
+
+Early implementation
+
+![alt text][early-implementation-plates-stacked_01]
+
+![alt text][early-implementation-plates-stacked_02]
+
+Examples of 4d visualisations
+
 
 
 
@@ -64,11 +130,16 @@ Graphical representation of checkerboard assay
 [early-design-plate-iterations]:/report/img/early-design-plate-iterations.png "Early stage design, iterating through stacked plates"
 [early-design-stacked-plates_01]:/report/img/early-design-stacked-plates_01.png "Early stage design, stacked plates 1"
 [early-design-stacked-plates_02]:/report/img/early-design-stacked-plates_02.png "Early stage design, stacked plates 2"
+[early-design-3d-scatterplot]:/report/img/early-design-3d-scatterplot.png "Early stage design, stacked plates 2"
 [early-implementation-plates-stacked_01]:/report/img/early-implementation-plates-stacked_01.png "Early implementation, stacked plates 1"
 [early-implementation-plates-stacked_02]:/report/img/early-implementation-plates-stacked_02.png "Early implementation, stacked plates 2"
 [example-4d-visualisation_01]:/report/img/example-4d-visualisation_01.png "Example 4d visualisation, 3d scatterplot with colour"
 [example-4d-visualisation_02]:/report/img/example-4d-visualisation_02.png "Example 4d visualisation, 3d scatterplot with tails"
 [example-4d-visualisation_03]:/report/img/example-4d-visualisation_03.png "Example 4d visualisation, 3d surface with colour"
+[example-parallel-coordinate-plot]:/report/img/example-parallel-coordinate-plot.png "Parallel coordinate plot"
+[example-star-plot]:/report/img/example-star-plot.png "Example star plot"
+[example-4x4-plots]:/report/img/example-4x4-plots.png "Example star plot"
+[example-abc]:/report/img/example-abc.png "Example star plot"
 [spreadsheet-data]:/report/img/spreadsheet-data.png "Screenshot of spreadsheet data"
 
 
