@@ -1,53 +1,66 @@
 import d3 from "d3"
+
 // d3Chart.js
 
 var d3Chart = {};
 
+// Constants
+var tooltipVisibleOpacity = 0.9,
+    tooltipHiddenOpacity = 0,
+    circleSelectedOpacity = 1.0,
+    circleSelectedRadius = 10,
+    circleNormalRadius = 3.5,
+    circleNormalOpacity = 0.6,
+    xAxisYOffset = 10,
+    yAxisYOffset = 10,
+    tooltipFadeinTime = 200;
+
 d3Chart.create = function(el, props, state) {
   this.props = props;
   var svg = d3.select(el).append("svg")
-            .attr("width", this.props.width + this.props.margins.left + this.props.margins.right)
-            .attr("height", this.props.height + this.props.margins.top + this.props.margins.bottom)
+            .attr("width", this.props.width + this.props.margins.left +
+                    this.props.margins.right)
+            .attr("height", this.props.height + this.props.margins.top +
+                    this.props.margins.bottom)
         .append("g")
-            .attr("transform", "translate(" + this.props.margins.left + "," + this.props.margins.top + ")")
+            .attr("transform", "translate(" + this.props.margins.left + "," +
+                    this.props.margins.top + ")")
             .attr("class","d3-scatterplot-points");
 
     // Setup axes
   svg.append("g")
       .attr("id", "scatterplot-x-axis")
+      .attr("class","axis")
       .attr("transform", "translate(0," + this.props.height + ")")
     .append("text")
-      .attr("class", "label")
+      .attr("class","label")
       .attr("x", (this.props.width/2))
-      .attr("y", this.props.margins.bottom - 10)
-      .style("text-anchor", "middle")
-      .style("font-size",15)
+      .attr("y", this.props.margins.bottom - xAxisYOffset)
       .text("FIC");
 
   svg.append("g")
       .attr("id", "scatterplot-y-axis")
+      .attr("class","axis")
     .append("text")
-      .attr("class", "label")
+      .attr("class","label")
       .attr("transform", "rotate(-90)")
-      .attr("y", -(this.props.margins.left) + 15)
+      .attr("y", -(this.props.margins.left) + yAxisYOffset)
       .attr("x", -(this.props.height - this.props.margins.top -
                   this.props.margins.bottom)/2)
       .attr("dy", ".71em")
-      .style("font-size",15)
-      .style("text-anchor", "middle")
       .text("Luminosity")
 
   var tooltip = d3.select("body").append("div")
-      .attr("class", "tooltip tooltip-style")
-      .style("opacity", 0);
+      .attr("class","tooltip tooltip-style")
+      .style("opacity", tooltipHiddenOpacity);
 
   var yTooltip = d3.select("body").append("div")
-      .attr("class", "y-tooltip small-tooltip-style")
-      .style("opacity", 0);
+      .attr("class","y-tooltip small-tooltip-style")
+      .style("opacity", tooltipHiddenOpacity);
 
   var xTooltip = d3.select("body").append("div")
-      .attr("class", "x-tooltip small-tooltip-style")
-      .style("opacity", 0);
+      .attr("class","x-tooltip small-tooltip-style")
+      .style("opacity", tooltipHiddenOpacity);
 
   this.props.svg = svg;
   this.update(el, state);
@@ -77,8 +90,8 @@ d3Chart.update = function(el, state) {
   this.props.svg.selectAll(".dot")
       .data(state.data)
     .enter().append("circle")
-      .attr("class", "dot")
-      .attr("r", 3.5)
+      .attr("class","dot")
+      .attr("r", circleNormalRadius)
       .attr("cx", function(d) {
           return x(d.fic);
       })
@@ -97,14 +110,14 @@ d3Chart.update = function(el, state) {
          var left = matrix.e + window.pageXOffset
          var top =  matrix.f + window.pageYOffset
           d3.select(".tooltip").transition()
-               .duration(200)
-               .style("opacity", .9);
+               .duration(tooltipFadeinTime)
+               .style("opacity", tooltipVisibleOpacity);
           d3.select(".x-tooltip").transition()
-               .duration(200)
-               .style("opacity", .9);
+               .duration(tooltipFadeinTime)
+               .style("opacity", tooltipVisibleOpacity);
           d3.select(".y-tooltip").transition()
-               .duration(200)
-               .style("opacity", .9);
+               .duration(tooltipFadeinTime)
+               .style("opacity", tooltipVisibleOpacity);
           d3.select(".tooltip").html(
                 "Drug A: " + that._formatNumber(d.a) + "<br/>" +
                 "Drug B: " + that._formatNumber(d.b) + "<br/>" +
@@ -118,7 +131,7 @@ d3Chart.update = function(el, state) {
                .style("left", (window.pageXOffset + yMatrix.e - 50) + "px")
                .style("top", top - 10 + "px");
           that.props.svg.append("svg:line")
-              .attr("class", "x-drop-line")
+              .attr("class","x-drop-line")
               .attr("x1", d3.select(this).attr("cx"))
               .attr("x2", d3.select(this).attr("cx"))
               .attr("y1", d3.select(this).attr("cy"))
@@ -126,7 +139,7 @@ d3Chart.update = function(el, state) {
               .attr("stroke",d3.select(this).style("fill"))
               .attr("stroke-width","2");
           that.props.svg.append("svg:line")
-              .attr("class", "y-drop-line")
+              .attr("class","y-drop-line")
               .attr("x1", 0)
               .attr("x2", d3.select(this).attr("cx"))
               .attr("y1", d3.select(this).attr("cy"))
@@ -134,9 +147,9 @@ d3Chart.update = function(el, state) {
               .attr("stroke",d3.select(this).style("fill"))
               .attr("stroke-width","2");
          circ.transition()
-            .duration(200)
-            .style("fill-opacity", 1) // TODO: move to CSS
-            .attr("r", 10);
+            .duration(tooltipFadeinTime)
+            .style("fill-opacity", circleSelectedOpacity)
+            .attr("r", circleSelectedRadius);
       })
       .on("mouseout", function(d) {
           d3.selectAll(".x-drop-line").remove();
@@ -152,16 +165,16 @@ d3Chart.update = function(el, state) {
                .style("opacity", 0);
          d3.select(this).transition()
             .duration(500)
-            .style("fill-opacity", 0.6) // TODO: move to CSS
+            .style("fill-opacity", circleNormalOpacity)
             .attr("r", 3.5);
       })
-      .style("fill-opacity", 0.6) // TODO: move to CSS
+      .style("fill-opacity", circleNormalOpacity)
       .style("fill", function(d) { return color(d.plate_num); });
 
   var legend = this.props.svg.selectAll(".legend")
       .data(color.domain())
     .enter().append("g")
-      .attr("class", "legend")
+      .attr("class","legend")
       .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
   legend.append("rect")
@@ -171,10 +184,10 @@ d3Chart.update = function(el, state) {
       .style("fill", color);
 
   legend.append("text")
+      .attr("class","legend-text")
       .attr("x", this.props.width - 24)
       .attr("y", 9)
       .attr("dy", ".35em")
-      .style("text-anchor", "end")
       .text(function(d) { return "Plate number " + d; });
 };
 
