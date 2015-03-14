@@ -33,11 +33,15 @@ three drugs tested in combination:
 - INH (isoniazid)
 - FA (fusidic acid)
 
+![alt text][drug-interaction-plates]
+
+Reference: Figure S2. Synergistic interaction between spectinomycin and bromperidol against M. tuberculosis. From Synergistic drug combinations for tuberculosis therapy identified by a novel high throughput screen. Ramón-García, S. et al.
+
 Five plates set up, each compromised 2-fold dilutions of RIF down the columns, and 2-fold dilutions of INH across the rows.
 
 FA was added at specific concentration for each of 4 plates while the fifth plate in the stack contained 0 ug/ul.
 
-The values are fluorescence intensities from a green fluorescent protein (gfp) reporter that is expressed in the bacterium. The maximum signal (i.e. uninhibited growth) is set at a limit of 65000.
+The values are fluorescence intensities from a green fluorescent protein (GFP) reporter that is expressed in the bacterium. The maximum signal (i.e. uninhibited growth) is set at a limit of 65000.
 
 ## Problem
 
@@ -47,12 +51,17 @@ The values are fluorescence intensities from a green fluorescent protein (gfp) r
 
 ## Data
 
+
 Intensities of Green Flourescent Protein in bacterium on 6 plates, divided into cells.
 
 Each cell contains a range of dilutions of
 RIF, INH, each plate has a different dilution of FA.
 
 For computer scientists: 4-tuples, first three entries are dosages and the third is the drug’s “efficacy”. 
+
+![alt text][spreadsheet-data]
+
+Reference: 3D Assay (RIF, INH, FA) spreadsheet provided by Digby Warner.
 
 ## Objective
 
@@ -64,6 +73,10 @@ Two stages:
 
 ## Visual Queries
 
+![alt text][graphical-representation-of-checkerboard-assay]
+
+Reference: Figure S1. Graphical representation of a Checkerboard Assay. From Synergistic drug combinations for tuberculosis therapy identified by a novel high throughput screen. Ramón-García, S. et al.
+
 - Where is the "frontier"? (values with the lowest dosage that's effective).
 - Which drugs are most effective on their own/in a pair?
 - Are there any adversarial interactions?
@@ -74,8 +87,14 @@ Two stages:
 ![alt text][example-star-plot]
 ![alt text][example-parallel-coordinate-plot]
 
+Figure 1 reference: Automation Tool for Rapid Design of Space Systems, http://start1.jpl.nasa.gov/caseStudies/autoTool.cfm
+Figure 2 reference: Parallel coordinate plot, Fisher's Iris data, http://en.wikipedia.org/wiki/Parallel_coordinates
+
 ![alt text][example-abc]
 ![alt text][example-4x4-plots]
+
+Figure 1 Reference: could not find
+Figure 2 Reference: Mathworks. Visualizing Four-Dimensional Data, http://www.mathworks.com/help/matlab/examples/visualizing-four-dimensional-data.html
 
 ## Our Ideas
 
@@ -86,14 +105,15 @@ careful as to how the fourth variable, the intensity of the Green Flourescent Pr
 A naive selection of 3D visualisation may not support the visual query for detecting this intensity, but instead
 hide it. A common visualisation used to represent four dimensional data is a 3D surface diagram **[see figure below]** where colour is
 used on the surface itself to represent the fourth variable - much like a heatmap. We discovered that this
-type of visualisation was in fact being used in reports to illustrate their results. There are many pitfalls
-to this type of visualisation, one of them is that the surface occludes itself, hiding colours in the background.
-The other is that it is very difficult to determine both the 3D coordinates of the point where a colour is
-located on the surface, and the value of the actual colour! Another pitfall is that the surface is a continuous
+type of visualisation was in fact being used in reports to illustrate results. There are many pitfalls
+to this type of visualisation, one of them is that the surface occludes itself, hiding colours.
+The other is that it is very difficult to determine the 3D coordinates of a point
+on the surface, and the value of the actual colour! Another pitfall is that the surface is a continuous
 interpolation of the discrete quantities, and we cannot tell which quantities were actually used.
 
 ![alt text][example-4d-visualisation_03]
 [TODO: Figure number]
+Reference: Mathworks. Visualizing Four-Dimensional Data, http://www.mathworks.com/help/matlab/examples/visualizing-four-dimensional-data.html
 
 TODO: discuss 2D drawings
 
@@ -110,6 +130,21 @@ is both a benefit and a hindrance. One solution to this problem is to draw lines
 ![alt text][example-4d-visualisation_01]
 ![alt text][example-4d-visualisation_02]
 
+Figure References: Mathworks. Visualizing Four-Dimensional Data, http://www.mathworks.com/help/matlab/examples/visualizing-four-dimensional-data.html
+
+We put together mockups for alternate 3D visualisations, one of which is **[figured below]** as a 3D bar chart.
+The two horizontal axes are for RIF and INH, while the height represents the GFP luminosity. A slider is used
+for interaction of the independent variable FA and the height of the bars animates accordingly to illustrate
+how the GFP luminosity is affected. This visualisation suffers severely from occlusion and was not explored further.
+A follow up idea was to represent the concentrations of FA, RIF and INH as points on a 3D scatterplot with a
+green material, slightly blurred, to indicate the GFP luminosity. As before, it was hard to tell where the points
+lay on the scatterplot, especially since they had varying degrees of luminosity and blur. Another issue was that
+we were not interested in high luminosity values, but rather low luminosity values. These lower luminosity values
+would be barely visible against the background. This design clearly opposed our visual queries.
+
+![alt text][early-design-3d-bar-chart]
+![alt text][early-design-3d-scatterplot]
+
 We began to realise that a single 3D diagram would not be sufficient in analysing the results. Two dimensional
 (2D) visualisations would likely be needed alongside a 3D diagram. This would allow us to keep the 3D visualisation simple
 and use it, for example, in visual queries that compare the results of neighbouring points and plates (i.e. the physical space!).
@@ -117,26 +152,25 @@ The 2D visualisation could then be used for the variables most critical in decis
 
 We identified the two variables critical to analysing the results, which would be used in the 2D visualisation. These are
 the intensity of the Green Flourescent Protein (i.e. the Luminosity) and the Fractional Inhibitory Concentration (FIC) **[describe this somewhere]**.
-A 2D scatterplot would contain the visual queries needed to make accurate comparisons of all the cells, using
-these two variables. We are interested in the point which has the lowest FIC value and the lowest Luminosity: a point very
+A 2D scatterplot would contain the visual queries needed to make accurate comparisons of the two variables, using
+all the cells. We are interested in the point which has the lowest FIC value and the lowest Luminosity: a point very
 close to the origin. This satisfies our logical decision making in identifying the best point from the experiment, all we
 need is to map this 2D point back to the cell containing the 3 concentration values: a 3D point.
 
 The 3D visualisation was then designed exactly for this mapping. It serves the visual queries which help to identify the
 exact cell which we are interested in on the plates. Necessarily, it made sense to use the physical association of the cells
-on plates in the visualisation. We chose to represent planes in the 3D space as the plates, stacked vertically on top of
+and the plates in the visualisation. We chose to represent planes in the 3D space as these plates, stacked vertically on top of
 one another. The concentration of Fusidic Acid (FA) only differs by plate, while the concentrations of Rifampicin (RIF)
 and Isoniazid (INH) differ by cell. This makes the FA concentration a good candidate for the vertical distance between the
 stacked plates, while RIF and INH are well suited for the two dimensions that define the plane.
 
 The first design for the 3D visualisation used a physical association between the stacked planes and the plates.
-A plane in 3D takes up zero space along its normal vector (the axis running perpendicularly through the plane),
-whereas the plane itself is divided into non-zero square cells. This meant that the discrete values for RIF and INH
+A plane in 3D takes up zero area along its normal vector (the axis running perpendicularly through the plane),
+whereas the plane itself is divided into square cells with non-zero surface areas. This meant that the discrete values for RIF and INH
 would be represented by cells with length of, say, Y that would span a 2D surface with area YxY.
-In contrast, the discrete FA value would take up zero surface area. Our initial concern was that this discrepancy
+In contrast, the discrete FA value would take up zero area. Our initial concern was that this discrepancy
 in surface area taken up between the three drug concentrations would be misleading to the user, and for this
-reason the first iteration of the design **[left on Figure below]** represented the points as cubes instead of planes.
-The concentrations would then be represented equally in surface area.
+reason the first iteration of the design **[left on Figure below]** represents the points as cubes instead of planes.
 
 ![alt text][early-design-plate-iterations]
 
@@ -156,9 +190,9 @@ distance proportional to the FA concentration. A quick drawing was done to visua
 were to separate the cells according to their spatial relativity, but this would clearly break down the physical
 association completely and degrade the visualisation into a 3D scatterplot with squares as points - an issue in itself.
 
-The proportional vertical stacking added no value to the physical association
-intended for the visual query and still had the occlusion problem. As a result the design was refactored to use
-uniform vertical spacing, obliterating the occlusion issue and associating plates in the order of their FA value.
+The proportionate stacking distance added no value to the physical association
+in the visual query and still had the occlusion problem. As a result the design was refactored to use
+uniform vertical spacing, obliterating occlusion and associating plates in the order of their FA value.
 **[See figures below]**
 
 ![alt text][sketch-plate-cells-scatterplot]
@@ -170,21 +204,27 @@ displayed on a web page, a simple web based grid layout was chosen **[See figure
 
 ![atl text][sketch-layout]
 
-TODO: talk about the 1D efficacy distance which was taken out, and the exponential curve which was made obselete by
-the 2D scatterplot.
+The sketch above shows a concept for the layout. In the top-middle of the diagram is a grid with the 'frontier' and
+hyperbolic curve currently used for analysing data and illustrated in **[Figure graphical-representation-of-checkerboard-assay]**
+The point on the hyperbolic curve whose distance is closest to the origin represents the cell with the
+optimum FIC to Luminosity values. On the bottom right is a horizontal, 1 dimensional graph which was designed to
+plot this distance. It extracts the distance value out of the 2D graph and onto the 1D graph for an easier visual query.
+The hyperbolic curve, and consequently the 1D graph, have been made redundant by the 2D scatterplot visualisation
+and have since been removed. The 2D illustration of the 'frontier', however, has been kept and a slider for the
+FA value has been included to interact with and observe the change in Luminosity values between the
+plate concentrations of FA.
 
-# Drawings not yet in use
+The highlighted point on the scatterplot is associated to the highlighted cell on the 3D visualisation
+as being the most optimum FIC to Luminosity value, and illustrates the use of colour highlighting to map
+points on the scatterplot to cells on the plates.
 
-![alt text][spreadsheet-data]
+# What are we missing?
 
-![alt text][graphical-representation-of-checkerboard-assay]
+- the concentrations of drugs by themselves
 
-![alt text][drug-interaction-plates]
+# Drawings not yet in use or don't need to be used
 
 ![alt text][early-design-stacked-plates_02]
-
-![alt text][early-design-3d-bar-chart]
-![alt text][early-design-3d-scatterplot]
 
 ![alt text][early-implementation-plates-stacked_01]
 
