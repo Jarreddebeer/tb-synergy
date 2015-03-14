@@ -12,7 +12,7 @@ var tooltipVisibleOpacity = 0.9,
     pointNormalSize = 50,
     circleNormalOpacity = 0.6,
     xAxisYOffset = 10,
-    yAxisYOffset = 10,
+    yAxisYOffset = 75,
     tooltipFadeinTime = 200;
 
 d3Chart.create = function(el, props, state) {
@@ -44,9 +44,8 @@ d3Chart.create = function(el, props, state) {
     .append("text")
       .attr("class","label")
       .attr("transform", "rotate(-90)")
-      .attr("y", -(this.props.margins.left) + yAxisYOffset)
-      .attr("x", -(this.props.height - this.props.margins.top -
-                  this.props.margins.bottom)/2)
+      .attr("y", - yAxisYOffset)
+      .attr("x", -(this.props.height - this.props.margins.top)/2)
       .attr("dy", ".71em")
       .text("Luminosity")
 
