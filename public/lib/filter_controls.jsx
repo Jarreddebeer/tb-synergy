@@ -14,7 +14,6 @@ export default React.createClass({
               values: [ that.props.display_ranges[key][0], that.props.display_ranges[key][1]],
               slide: function( event, ui ) {
                 that.props.updateDisplayRange(key, ui.values);
-                $( "#"+key+"-values" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
               }
             });
             $( "#"+key+"-values").val(that.props.display_ranges[key][0] + " - "+ that.props.display_ranges[key][1]);
@@ -27,20 +26,21 @@ export default React.createClass({
           value: that.props.selected_plate,
           slide: function( event, ui ) {
             that.props.updatePlate(ui.value);
-            $( "#plate-value").val(ui.value);
           }
         });
         $( "#plate-value").val(that.props.selected_plate);
-
       });
   },
 
   componentDidUpdate: function() {
-    var el = this.getDOMNode();
-  },
-
-  componentWillUnmount: function() {
-    var el = this.getDOMNode();
+    var that = this;
+    // if someone else updated the slider, make sure it's reflected here
+    $("#slider-plate").slider("value", this.props.selected_plate);
+    // update labels
+    $( "#plate-value").val(this.props.selected_plate);
+    this.props.keysToFilter.forEach(function(key) {
+        $( "#"+key+"-values" ).val(that.props.display_ranges[key][0]+ " - " + that.props.display_ranges[key][1]);
+    });
   },
 
   render: function() {

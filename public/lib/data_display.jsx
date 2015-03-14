@@ -105,7 +105,6 @@ function parseDrugData(row, i){
         datum[h] = +row[h];
     });
     datum.row_index = i;
-    console.log(datum);
     return datum;
 }
 d3.csv("data/drug_data.csv")
