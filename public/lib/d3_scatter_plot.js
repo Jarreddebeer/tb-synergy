@@ -191,7 +191,6 @@ d3Chart._displayTooltip = function(elm, d, pos) {
                 .translate(0, -pos[1] + this.props.height);
     var yMatrix = elm.getScreenCTM()
                 .translate(-pos[0],0);
-    console.log(matrix, xMatrix, yMatrix);
     var left = matrix.e + window.pageXOffset;
     var top =  matrix.f + window.pageYOffset;
 

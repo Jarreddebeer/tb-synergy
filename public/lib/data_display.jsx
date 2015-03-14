@@ -6,8 +6,11 @@ import FicCurves from "./fic_curves.jsx!"
 
 var DataDisplay = React.createClass({
   getInitialState: function() {
+    var selectedPointIndex = this.getBestPoint(this.props.data);
     return {
-        display_ranges: this.getDataRanges(this.props.data)
+        display_ranges: this.getDataRanges(this.props.data),
+        selected_point_index: selectedPointIndex,
+        selected_plate: this.props.data[selectedPointIndex].plate_num
     };
   },
 
@@ -27,20 +30,32 @@ var DataDisplay = React.createClass({
     });
     return ranges;
   },
+
+  getBestPoint: function(data) {
+    var point = null,
+        index = null;
+    this.props.data.forEach(function(datum, i) {
+        if (datum.lumo < 65000 && (!point || datum.fic < point.fic)) {
+            point = datum;
+            index = i;
+        }
+    });
+    return index;
+  },
   
   render: function() {
     return (
     <div className="row">
         <div className="row">
             <div className="col-sm-6" id="graph-1">
-                <Plate data={this.props.data} display_ranges={this.state.display_ranges} />
+                <Plate data={this.props.data} display_ranges={this.state.display_ranges} selected_point_index={this.state.selected_point_index}/>
             </div>
             <div className="col-sm-6">
                     <div className="row" id="graph-2">
-                        <ScatterPlot data={this.props.data} display_ranges={this.state.display_ranges} />
+                        <ScatterPlot data={this.props.data} display_ranges={this.state.display_ranges} selected_point_index={this.state.selected_point_index}/>
                     </div>
                     <div className="row" id="graph-3">
-                        <FicCurves data={this.props.data} display_ranges={this.state.display_ranges} />
+                        <FicCurves data={this.props.data} display_ranges={this.state.display_ranges} selected_point_index={this.state.selected_point_index} selected_plate={this.state.selected_plate}/>
                     </div>
             </div>
         </div>
