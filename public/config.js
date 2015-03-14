@@ -329,6 +329,7 @@ System.config({
     "bootstrap": "github:twbs/bootstrap@3.3.2",
     "d3": "github:mbostock/d3@3.5.5",
     "jsx": "github:floatdrop/plugin-jsx@1.0.1",
+    "markdown": "npm:markdown@0.5.0",
     "react": "npm:react@0.12.2",
     "three": "npm:three@0.70.0",
     "three.regular.helvetiker": "npm:three.regular.helvetiker@1.0.0",
@@ -339,7 +340,7 @@ System.config({
       "assert": "npm:assert@1.3.0"
     },
     "github:jspm/nodelibs-buffer@0.1.0": {
-      "buffer": "npm:buffer@3.1.0"
+      "buffer": "npm:buffer@3.1.1"
     },
     "github:jspm/nodelibs-constants@0.1.0": {
       "constants-browserify": "npm:constants-browserify@0.0.1"
@@ -393,6 +394,10 @@ System.config({
     "github:twbs/bootstrap@3.3.2": {
       "css": "github:systemjs/plugin-css@0.1.6",
       "jquery": "github:components/jquery@2.1.3"
+    },
+    "npm:abbrev@1.0.5": {
+      "assert": "github:jspm/nodelibs-assert@0.1.0",
+      "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:amdefine@0.1.0": {
       "fs": "github:jspm/nodelibs-fs@0.1.1",
@@ -451,6 +456,11 @@ System.config({
       "stream": "github:jspm/nodelibs-stream@0.1.0"
     },
     "npm:buffer@3.1.0": {
+      "base64-js": "npm:base64-js@0.0.8",
+      "ieee754": "npm:ieee754@1.1.4",
+      "is-array": "npm:is-array@1.0.1"
+    },
+    "npm:buffer@3.1.1": {
       "base64-js": "npm:base64-js@0.0.8",
       "ieee754": "npm:ieee754@1.1.4",
       "is-array": "npm:is-array@1.0.1"
@@ -633,6 +643,12 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.1",
       "source-map": "npm:source-map@0.1.31"
     },
+    "npm:markdown@0.5.0": {
+      "fs": "github:jspm/nodelibs-fs@0.1.1",
+      "nopt": "npm:nopt@2.1.2",
+      "process": "github:jspm/nodelibs-process@0.1.1",
+      "util": "github:jspm/nodelibs-util@0.1.0"
+    },
     "npm:miller-rabin@1.1.5": {
       "bn.js": "npm:bn.js@1.3.0",
       "brorand": "npm:brorand@1.0.5"
@@ -648,6 +664,15 @@ System.config({
       "minimist": "npm:minimist@0.0.8",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:nopt@2.1.2": {
+      "abbrev": "npm:abbrev@1.0.5",
+      "assert": "github:jspm/nodelibs-assert@0.1.0",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.1",
+      "stream": "github:jspm/nodelibs-stream@0.1.0",
+      "url": "github:jspm/nodelibs-url@0.1.0",
+      "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:once@1.3.1": {
       "wrappy": "npm:wrappy@1.0.1"
