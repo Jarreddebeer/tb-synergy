@@ -66,6 +66,7 @@ var DataDisplay = React.createClass({
                                  selected_plate={this.state.selected_plate} 
                                 display_ranges={this.state.display_ranges}
                                 updateDisplayRange={this.updateDisplayRange}
+                                updatePlate={this.updatePlate}
                                 keysToFilter={["lumo","a","b","c"]}/>
             </div>
         </div>
@@ -77,6 +78,10 @@ var DataDisplay = React.createClass({
     var ranges = this.state.display_ranges;
     ranges[key] = newRange;
     this.setState({display_ranges: ranges});
+  },
+
+  updatePlate: function(newPlateNum) {
+    this.setState({selected_plate: newPlateNum});
   }
 });
 

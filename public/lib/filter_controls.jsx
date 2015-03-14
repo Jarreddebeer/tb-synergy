@@ -19,6 +19,19 @@ export default React.createClass({
             });
             $( "#"+key+"-values").val(that.props.display_ranges[key][0] + " - "+ that.props.display_ranges[key][1]);
         });
+
+        $( "#slider-plate").slider({
+          min: that.props.display_ranges.plate_num[0],
+          max: that.props.display_ranges.plate_num[1],
+          step: 1,
+          value: that.props.selected_plate,
+          slide: function( event, ui ) {
+            that.props.updatePlate(ui.value);
+            $( "#plate-value").val(ui.value);
+          }
+        });
+        $( "#plate-value").val(that.props.selected_plate);
+
       });
   },
 
@@ -44,6 +57,13 @@ export default React.createClass({
         <div id={"slider-range-"+key}></div> 
         </div>)
         })}
+        <div key={"plate"}>
+        <p>
+          <label for="plate-value">Plate:</label>
+          <input type="text" id="plate-value"></input>
+        </p>
+        <div id="slider-plate"></div> 
+        </div>)
       </div>
     );
   }
