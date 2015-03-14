@@ -22,7 +22,16 @@ var numStepsB = 9;
 
 d3Chart.create = function(el, props, state) {
   this.props = props;
-  this.props.colours = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"];
+  this.props.colours = [
+              '#B2182B',
+              '#D6604D',
+              '#F4A582',
+              '#FDDBC7',
+              '#E0E0E0',
+              '#BABABA',
+              '#878787',
+              '#4D4D4D']
+;
   this.props.color = d3.scale.quantile()
                         .domain([0,65000])
                         .range(this.props.colours);
