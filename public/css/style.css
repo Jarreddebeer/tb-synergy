@@ -1,0 +1,56 @@
+/* CSS FOR PAGE LOADING */
+
+body {
+    margin: 0;
+}
+
+body.loading {
+    background: #EFEFEF;
+}
+
+body #loading {
+    display: none;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    margin-top: -10px;
+    text-align: center;
+}
+
+body.loading #loading {
+    display: block;
+}
+
+body.loading #app {
+    display: none;
+}
+
+/* CSS FOR GRAPHS */
+
+#graph-1 { }
+
+#graph-2 { }
+
+#graph-3 { }
+
+#filters { }
+
+.scatterplot svg {
+    margin-top: 82px;
+}
+
+.tooltip-style {
+    position: absolute;
+    pointer-events: none;
+    padding: 5px;
+    background-color: rgba(255,255,255,0.95);
+    border-radius: 6px;
+}
+
+.small-tooltip-style {
+    position: absolute;
+    pointer-events: none;
+    padding: 5px;
+    background-color: rgba(255,255,255,0.95);
+    border-radius: 6px;
+}

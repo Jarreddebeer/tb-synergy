@@ -1,52 +1,91 @@
 <html lang="en">
 <head>
-
     <link rel="stylesheet" href="css/bootstrap.min.css" />
-
-    <style>
-    </style>
-
 </head>
 
 <div id="app">
-<header class="navbar navbar-default" id="top" role="banner">
-  <div class="container">
-    <div class="navbar-header">
-      <a href="/" class="navbar-brand">TB Synergy Visualisation</a>
-    </div>
-    <nav>
-      <ul class="nav navbar-nav"></ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-          <a href="/report.html">Report</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</header>
+
+    <header class="navbar navbar-default" id="top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">TB Synergy Visualisation</a>
+        </div>
+        <nav>
+          <ul class="nav navbar-nav"></ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="/report.html">Report</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
 
 <div id="report-source" style="display: none;">
-title
-========
+
+Visualising Synergistic drug combinations for tuberculosis therapy
+=====
+
+three drugs tested in combination:
+
+- RIF (rifampicin)
+- INH (isoniazid)
+- FA (fusidic acid)
+
+Five plates set up, each compromised 2-fold dilutions of RIF down the columns, and 2-fold dilutions of INH across the rows.
+
+FA was added at specific concentration for each of 4 plates while the fifth plate in the stack contained 0 ug/ul.
+
+The values are fluorescence intensities from a green fluorescent protein (gfp) reporter that is expressed in the bacterium. The maximum signal (i.e. uninhibited growth) is set at a limit of 65000.
+
+Graphical representation of checkerboard assay
+![alt text][graphical-representation-of-checkerboard-assay]
+
+![alt text][drug-interaction-plates]
+![alt text][early-design-3d-bar-chart]
+![alt text][early-design-plate-iterations]
+![alt text][early-design-stacked-plates_01]
+![alt text][early-design-stacked-plates_02]
+![alt text][early-implementation-plates-stacked_01]
+![alt text][early-implementation-plates-stacked_02]
+![alt text][example-4d-visualisation_01]
+![alt text][example-4d-visualisation_02]
+![alt text][example-4d-visualisation_03]
+![alt text][spreadsheet-data]
+
+
+
+
+
+
+[graphical-representation-of-checkerboard-assay]:/report/img/graphical-representation-of-checkerboard-assay.png "Graphical representation of checkerboard assay"
+[drug-interaction-plates]:/report/img/drug-interaction-plates.png "Drug interaction plages"
+[early-design-3d-bar-chart]:/report/img/early-design-3d-bar-chart.png "Early stage design, 3d Bar chart"
+[early-design-plate-iterations]:/report/img/early-design-plate-iterations.png "Early stage design, iterating through stacked plates"
+[early-design-stacked-plates_01]:/report/img/early-design-stacked-plates_01.png "Early stage design, stacked plates 1"
+[early-design-stacked-plates_02]:/report/img/early-design-stacked-plates_02.png "Early stage design, stacked plates 2"
+[early-implementation-plates-stacked_01]:/report/img/early-implementation-plates-stacked_01.png "Early implementation, stacked plates 1"
+[early-implementation-plates-stacked_02]:/report/img/early-implementation-plates-stacked_02.png "Early implementation, stacked plates 2"
+[example-4d-visualisation_01]:/report/img/example-4d-visualisation_01.png "Example 4d visualisation, 3d scatterplot with colour"
+[example-4d-visualisation_02]:/report/img/example-4d-visualisation_02.png "Example 4d visualisation, 3d scatterplot with tails"
+[example-4d-visualisation_03]:/report/img/example-4d-visualisation_03.png "Example 4d visualisation, 3d surface with colour"
+[spreadsheet-data]:/report/img/spreadsheet-data.png "Screenshot of spreadsheet data"
+
+
+
 </div>
 
-<div class="container">
-    <div class="row">
-        <div id="report-markdown" class="col-sm-12"></div>
+    <div class="container">
+        <div class="row">
+            <div id="report-target" class="col-sm-12"></div>
+        </div>
     </div>
-</div>
 
 <script src="lib/vendor/markdown.min.js"></script>
 <script>
-  function Editor(input, preview) {
-    this.update = function () {
-      preview.innerHTML = markdown.toHTML(input.textContent);
-    };
-    input.editor = this;
-    this.update();
-  }
-  var $ = function (id) { return document.getElementById(id); };
-  new Editor($("report-source"), $("report-markdown"));
+  var src = document.getElementById('report-source');
+  var tgt = document.getElementById('report-target');
+  tgt.innerHTML = markdown.toHTML(src.textContent);
 </script>
 
 </body>
