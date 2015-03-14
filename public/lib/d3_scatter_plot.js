@@ -112,7 +112,7 @@ d3Chart.update = function(el, state) {
 
   // Points
   var points = this.props.svg.selectAll(".dot")
-      .data(data, function(d, i) {return d.a + "," + d.b + "," + d.c + "," + d.lumo});
+      .data(data, function(d, i) {return d.row_index})
    points.enter().append("path")
       .attr("class","dot")
       //.attr("r", circleNormalRadius)
@@ -120,18 +120,42 @@ d3Chart.update = function(el, state) {
           var pos = that._calcPosition(d, x, y);
           return "translate(" + pos[0] + "," + pos[1] + ")";
       })
-      .attr("d", d3.svg.symbol()
-                      .size(function(d) { return pointNormalSize; })
-                      .type(function(d) { return that._getSVGSymbol(d.plate_num)}))
       .on("mouseover", function(d) {
+        that.props.updateSelectedPoint(d.row_index);
         that._displayTooltip(this, d, that._calcPosition(d, x, y));
       })
       .on("mouseout", function(d) {
+        that.props.updateSelectedPoint(-1);
         that._removeTooltip(this, d);
+      })
+      .on("click", function(d) {
+        that.props.updatePlate(d.plate_num);
       })
       .style("fill-opacity", circleNormalOpacity)
       .style("fill", function(d) { return color(d.plate_num); });
     points.exit().remove();
+
+
+     // Highlight point
+     points.transition()
+        .duration(tooltipFadeinTime)
+        .style("fill-opacity", function(d) {
+           if(d.row_index == state.selected_point_index){
+                return circleSelectedOpacity;
+           } else {
+                return circleNormalOpacity;
+           }
+       })
+       .attr("d", d3.svg.symbol()
+        .type(function(d) { return that._getSVGSymbol(d.plate_num)})
+        .size( function(d) {
+           if(d.row_index == state.selected_point_index){
+                return pointSelectedSize
+           } else {
+                return pointNormalSize;
+           }
+        }))
+
   // Legend
   var legend = this.props.svg.selectAll(".legend")
       .data(color.domain())
@@ -170,14 +194,6 @@ d3Chart._removeTooltip = function(elm, d) {
   // Remove droplines
   d3.selectAll(".x-drop-line").remove();
   d3.selectAll(".y-drop-line").remove();
-
-  // unhighlight point
-  d3.select(elm).transition()
-    .duration(500)
-    .style("fill-opacity", circleNormalOpacity)
-    .attr("d", d3.svg.symbol()
-            .type(this._getSVGSymbol(d.plate_num))
-            .size(pointNormalSize))
 }
 
 d3Chart._hideTooltip = function(sel) {
@@ -247,14 +263,6 @@ d3Chart._displayTooltip = function(elm, d, pos) {
           .attr("y2", pos[1])
           .attr("stroke", point.style("fill"))
           .attr("stroke-width","2");
-
-     // Highlight point
-     point.transition()
-        .duration(tooltipFadeinTime)
-        .style("fill-opacity", circleSelectedOpacity)
-        .attr("d", d3.svg.symbol()
-                .type(this._getSVGSymbol(d.plate_num))
-                .size(pointSelectedSize))
 }
 
 d3Chart.destroy = function(el) {

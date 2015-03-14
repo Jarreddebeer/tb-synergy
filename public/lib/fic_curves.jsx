@@ -8,6 +8,7 @@ export default React.createClass({
       width: 600,
       height: 400,
       margins: {top: 20, right: 20, bottom: 50, left: 100},
+      updateSelectedPoint: this.props.updateSelectedPoint
     }, this.getChartState());
   },
 

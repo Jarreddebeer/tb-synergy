@@ -136,7 +136,7 @@ d3Chart.update = function(el, state) {
 
     // Squares
   var squares = this.props.svg.selectAll(".square")
-      .data(data, function(d) {return d.a + "," + d.b + "," + d.c + "," + d.lumo});
+      .data(data, function(d, i) {return d.row_index})
   squares.enter().append("rect")
         .attr("class", "square")
         .attr("x", function(d) { return x(d.b) })
@@ -148,12 +148,23 @@ d3Chart.update = function(el, state) {
         .style("fill", function(d) { return that.props.color(d.lumo)})
         .style("fill-opacity", circleNormalOpacity)
       .on("mouseover", function(d) {
+        that.props.updateSelectedPoint(d.row_index);
         that._displayTooltip(this, d, that._calcPosition(d, x, y));
       })
       .on("mouseout", function(d) {
+        that.props.updateSelectedPoint(-1);
         that._removeTooltip(this, d);
       });
   squares.exit().remove();
+  squares.transition()
+    .duration(tooltipFadeinTime)
+    .style("fill-opacity", function(d) {
+        if (d.row_index == state.selected_point_index) {
+            return circleSelectedOpacity;
+        } else {
+            return circleNormalOpacity;
+        }
+    });
 };
 
 d3Chart.destroy = function(el) {
@@ -187,19 +198,11 @@ d3Chart._displayTooltip = function(elm, d, pos) {
            .style("left", left + 60 + "px")
            .style("top", top - 50+ "px");
 
-     // Highlight point
-     point.transition()
-        .duration(tooltipFadeinTime)
-        .style("fill-opacity", circleSelectedOpacity);
 }
 d3Chart._removeTooltip = function(elm, d) {
   // Hide tooltips
   this._hideTooltip(d3.select(".tooltip"));
 
-  // unhighlight point
-  d3.select(elm).transition()
-    .duration(500)
-    .style("fill-opacity", circleNormalOpacity);
 }
 
 d3Chart._hideTooltip = function(sel) {

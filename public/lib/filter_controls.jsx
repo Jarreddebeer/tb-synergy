@@ -44,7 +44,6 @@ export default React.createClass({
   },
 
   render: function() {
-    console.log(this.props);
     return (
       <div className="filters">
       {this.props.keysToFilter.map(function(key){

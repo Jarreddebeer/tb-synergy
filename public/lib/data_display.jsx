@@ -10,7 +10,7 @@ var DataDisplay = React.createClass({
     var selectedPointIndex = this.getBestPoint(this.props.data);
     return {
         display_ranges: this.getDataRanges(this.props.data),
-        selected_point_index: selectedPointIndex,
+        selected_point_index: -1,
         selected_plate: this.props.data[selectedPointIndex].plate_num
     };
   },
@@ -53,10 +53,19 @@ var DataDisplay = React.createClass({
             </div>
             <div className="col-sm-6">
                     <div className="row" id="graph-2">
-                        <ScatterPlot data={this.props.data} display_ranges={this.state.display_ranges} selected_point_index={this.state.selected_point_index}/>
+                        <ScatterPlot data={this.props.data}
+                            display_ranges={this.state.display_ranges} 
+                            selected_point_index={this.state.selected_point_index}
+                            updatePlate={this.updatePlate}
+                            updateSelectedPoint={this.updateSelectedPoint}
+                            />
                     </div>
                     <div className="row" id="graph-3">
-                        <FicCurves data={this.props.data} display_ranges={this.state.display_ranges} selected_point_index={this.state.selected_point_index} selected_plate={this.state.selected_plate}/>
+                        <FicCurves data={this.props.data}
+                        display_ranges={this.state.display_ranges} 
+                        selected_point_index={this.state.selected_point_index} 
+                        updateSelectedPoint={this.updateSelectedPoint}
+                        selected_plate={this.state.selected_plate}/>
                     </div>
             </div>
         </div>
@@ -82,15 +91,21 @@ var DataDisplay = React.createClass({
 
   updatePlate: function(newPlateNum) {
     this.setState({selected_plate: newPlateNum});
+  },
+
+  updateSelectedPoint: function(index) {
+    this.setState({selected_point_index: index});
   }
 });
 
-function parseDrugData(row){
+function parseDrugData(row, i){
     var headings = ["a","b","c","lumo","plate_num","fic"],
         datum = {};
     headings.forEach(function(h){
         datum[h] = +row[h];
     });
+    datum.row_index = i;
+    console.log(datum);
     return datum;
 }
 d3.csv("data/drug_data.csv")
