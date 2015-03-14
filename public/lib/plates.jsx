@@ -12,8 +12,8 @@ export default React.createClass({
     var el = this.getDOMNode();
     threejsPlates.create(el, {
       devicePixelRatio: window.devicePixelRatio,
-      width: 400,
-      height: 600,
+      width: 450,
+      height: 700,
       margins: {top: 20, right: 20, bottom: 50, left: 100}
     }, this.getChartState());
   },

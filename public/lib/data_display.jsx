@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import React from "react"
 import d3 from "d3"
 import Plate from "./plates.jsx!"
@@ -31,17 +30,21 @@ var DataDisplay = React.createClass({
 
   render: function() {
     return (
-    <div className="row">
+    <div>
         <div className="row">
-            <div className="col-sm-6" id="graph-1">
+            <div className="col-sm-4" id="graph-1">
                 <Plate data={this.props.data} display_ranges={this.state.display_ranges} />
             </div>
-            <div className="col-sm-6">
+            <div className="col-sm-8">
                     <div className="row" id="graph-2">
-                        <ScatterPlot data={this.props.data} display_ranges={this.state.display_ranges} />
+                        <div className="col-sm-12">
+                            <ScatterPlot data={this.props.data} display_ranges={this.state.display_ranges} />
+                        </div>
                     </div>
                     <div className="row" id="graph-3">
-                        <FicCurves data={this.props.data} display_ranges={this.state.display_ranges} />
+                        <div className="col-sm-12">
+                            <FicCurves data={this.props.data} display_ranges={this.state.display_ranges} />
+                        </div>
                     </div>
             </div>
         </div>

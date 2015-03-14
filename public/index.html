@@ -2,68 +2,14 @@
 <head>
 
     <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
 
-    <!-- page loading css only -->
     <style>
-        body {
-            margin: 0;
-        }
-        body.loading {
-            background: #EFEFEF;
-        }
-        body #loading {
-            display: none;
-            width: 100%;
-            position: absolute;
-            top: 50%;
-            margin-top: -10px;
-            text-align: center;
-        }
-        body.loading #loading {
-            display: block;
-        }
-        body.loading #app {
-            display: none;
-        }
     </style>
     <!-- end page loading css -->
 
     <!-- to be refactored out -->
     <style>
-        #graph-1 {
-            background: #EFEFEF;
-            height: 350px;
-        }
-        #graph-2 {
-            background: #DDD;
-        }
-        #graph-3 {
-            background: #CCC;
-            height: 175px;
-        }
-        #filters {
-            background: #BBB;
-            height: 100px;
-        }
-        #column-left, #column-right {
-            background: #AAA;
-            height: 550px;
-        }
-        .tooltip-style {
-            position: absolute;
-            pointer-events: none;
-            padding: 5px;
-            background-color: rgba(255,255,255,0.95);
-            border-radius: 6px;
-        }
-
-        .small-tooltip-style {
-            position: absolute;
-            pointer-events: none;
-            padding: 5px;
-            background-color: rgba(255,255,255,0.95);
-            border-radius: 6px;
-        }
     </style>
 
 </head>
@@ -72,26 +18,27 @@
 <div id="loading">Loading...</div>
 
 <div id="app">
-<header class="navbar navbar-static-top" id="top" role="banner">
-  <div class="container">
-    <div class="navbar-header">
-      <a href="../" class="navbar-brand">TB Synergy Visualisation</a>
-    </div>
-    <nav>
-      <ul class="nav navbar-nav"></ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-          <a href="/about">About</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</header>
 
-<div class="row">
-    <div id="data-display" class="col-sm-12">
+    <header class="navbar navbar-default" id="top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">TB Synergy Visualisation</a>
+        </div>
+        <nav>
+          <ul class="nav navbar-nav"></ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="/report.html">Report</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="row">
+        <div id="data-display" class="col-sm-12"></div>
     </div>
-</div>
+
 </div>
 
 <script src="jspm_packages/system.js"></script>
