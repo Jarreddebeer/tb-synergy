@@ -3,6 +3,7 @@ import d3 from "d3"
 import Plate from "./plates.jsx!"
 import ScatterPlot from "./scatter_plot.jsx!"
 import FicCurves from "./fic_curves.jsx!"
+import FilterControls from "./filter_controls.jsx!"
 
 var DataDisplay = React.createClass({
   getInitialState: function() {
@@ -61,11 +62,21 @@ var DataDisplay = React.createClass({
         </div>
         <div className="row">
             <div className="col-sm-12" id="filters">
-                #filters
+                <FilterControls data={this.props.data} 
+                                 selected_plate={this.state.selected_plate} 
+                                display_ranges={this.state.display_ranges}
+                                updateDisplayRange={this.updateDisplayRange}
+                                keysToFilter={["lumo","a","b","c"]}/>
             </div>
         </div>
     </div>
     );
+  },
+
+  updateDisplayRange: function(key, newRange) {
+    var ranges = this.state.display_ranges;
+    ranges[key] = newRange;
+    this.setState({display_ranges: ranges});
   }
 });
 

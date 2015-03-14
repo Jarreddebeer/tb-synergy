@@ -328,8 +328,12 @@ System.config({
   "map": {
     "bootstrap": "github:twbs/bootstrap@3.3.2",
     "d3": "github:mbostock/d3@3.5.5",
+    "jquery-ui": "github:components/jqueryui@1.11.4",
     "jsx": "github:floatdrop/plugin-jsx@1.0.1",
     "react": "npm:react@0.12.2",
+    "github:components/jqueryui@1.11.4": {
+      "jquery": "github:components/jquery@2.1.3"
+    },
     "github:floatdrop/plugin-jsx@1.0.1": {
       "react-tools": "npm:react-tools@0.12.2"
     },
