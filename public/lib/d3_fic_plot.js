@@ -74,14 +74,29 @@ d3Chart.create = function(el, props, state) {
 };
 
 d3Chart._filterToPlate = function(state) {
-    var filteredData = [];
+    var that = this,
+        filteredData = [];
     state.data.forEach(function(datum) {
-        if (datum.plate_num == state.selected_plate) {
+        if (datum.plate_num == state.selected_plate &&
+            !that._filterNode(datum, state)) {
             filteredData.push(datum);
         }
     });
     return filteredData;
 }
+
+d3Chart._filterNode = function(d, state) {
+    var ranges = state.display_ranges;
+    for (var key in ranges) {
+        if (ranges.hasOwnProperty(key)) {
+           if (d[key] < ranges[key][0] ||
+                 d[key] > ranges[key][1]) {
+             return true;
+           }
+        }
+    }
+    return false;
+};
 
 d3Chart.update = function(el, state) {
     var that = this;
@@ -120,9 +135,10 @@ d3Chart.update = function(el, state) {
     d3.select("#ficcurves-y-axis").call(yAxis)
 
     // Squares
-  this.props.svg.selectAll(".square")
-      .data(data)
-      .enter().append("rect")
+  var squares = this.props.svg.selectAll(".square")
+      .data(data, function(d) {return d.a + "," + d.b + "," + d.c + "," + d.lumo});
+  squares.enter().append("rect")
+        .attr("class", "square")
         .attr("x", function(d) { return x(d.b) })
         .attr("y", function(d) { return y(d.c) - (y(d.c) - y(d.c + drugCSteps)) })
         .attr("rx", 4)
@@ -137,6 +153,7 @@ d3Chart.update = function(el, state) {
       .on("mouseout", function(d) {
         that._removeTooltip(this, d);
       });
+  squares.exit().remove();
 };
 
 d3Chart.destroy = function(el) {

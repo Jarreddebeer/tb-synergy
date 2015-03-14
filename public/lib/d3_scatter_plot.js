@@ -65,8 +65,30 @@ d3Chart.create = function(el, props, state) {
   this.update(el, state);
 };
 
+d3Chart._filteredData = function(state) {
+    var filteredData = [],
+        ranges = state.display_ranges;
+    state.data.forEach(function(datum) {
+        var addDatum = true;
+        for (var key in ranges) {
+            if (ranges.hasOwnProperty(key)) {
+               if (datum[key] < ranges[key][0] ||
+                     datum[key] > ranges[key][1]) {
+                 addDatum = false;
+                 break;
+               }
+            }
+        }
+        if(addDatum) {
+            filteredData.push(datum);
+        }
+    });
+    return filteredData;
+},
+
 d3Chart.update = function(el, state) {
-    var that = this;
+    var that = this,
+        data = this._filteredData(state);
     // Axes and scales
     var x = d3.scale.linear()
         .range([0, this.props.width]);
@@ -89,9 +111,9 @@ d3Chart.update = function(el, state) {
   d3.select("#scatterplot-y-axis").call(yAxis)
 
   // Points
-  this.props.svg.selectAll(".dot")
-      .data(state.data)
-    .enter().append("path")
+  var points = this.props.svg.selectAll(".dot")
+      .data(data, function(d, i) {return d.a + "," + d.b + "," + d.c + "," + d.lumo});
+   points.enter().append("path")
       .attr("class","dot")
       //.attr("r", circleNormalRadius)
       .attr("transform", function(d) {
@@ -109,7 +131,7 @@ d3Chart.update = function(el, state) {
       })
       .style("fill-opacity", circleNormalOpacity)
       .style("fill", function(d) { return color(d.plate_num); });
-
+    points.exit().remove();
   // Legend
   var legend = this.props.svg.selectAll(".legend")
       .data(color.domain())
