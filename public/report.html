@@ -1,6 +1,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/github-markdown.css" />
 </head>
 
 <div id="app">
@@ -23,8 +24,8 @@
 
 <div id="report-source" style="display: none;">
 
-Visualising Synergistic drug combinations for tuberculosis therapy
-=====
+# Visualising Synergistic drug combinations for tuberculosis therapy
+
 
 three drugs tested in combination:
 
@@ -38,15 +39,13 @@ FA was added at specific concentration for each of 4 plates while the fifth plat
 
 The values are fluorescence intensities from a green fluorescent protein (gfp) reporter that is expressed in the bacterium. The maximum signal (i.e. uninhibited growth) is set at a limit of 65000.
 
-Problem
-=======
+## Problem
+
 - status quo: drug combinations are only tested late in the drug discovery process
 - solution: test drug combinations from earliest point
 - new problem: TB is treated with combinations of 3 or 4 drugs at a time, visualising four dimensional data is difficult for those without CS degrees (and, it turns out, those with one too)
 
-Data
-=====
-![alt text][spreadsheet-data]
+## Data
 
 Intensities of Green Flourescent Protein in bacterium on 6 plates, divided into cells.
 
@@ -55,74 +54,139 @@ RIF, INH, each plate has a different dilution of FA.
 
 For computer scientists: 4-tuples, first three entries are dosages and the third is the drug’s “efficacy”. 
 
-Graphical representation of checkerboard assay
+## Objective
 
-![alt text][graphical-representation-of-checkerboard-assay]
-
-![alt text][drug-interaction-plates]
-
-4D surface visualisation in use
-
-![alt text][example-4d-visualisation_03]
-
-Objective
-=========
 Overall: find the combination of drugs that provides the greatest effect at the lowest dosage.
 
 Two stages:
 - Data exploration: what happened?
 - Data presentation: how do I communicate it?
 
-Visual Queries
-==============
+## Visual Queries
+
 - Where is the "frontier"? (values with the lowest dosage that's effective).
 - Which drugs are most effective on their own/in a pair?
 - Are there any adversarial interactions?
 - Is a drug active by itself?
 
-Existing Visualisations for high dimensional data
-=========
-
-![alt text][example-parallel-coordinate-plot]
+## Existing Visualisations for high dimensional data
 
 ![alt text][example-star-plot]
-
-![alt text][example-4d-visualisation_01]
-
-![alt text][example-4d-visualisation_02]
-
-![alt text][example-4x4-plots]
+![alt text][example-parallel-coordinate-plot]
 
 ![alt text][example-abc]
+![alt text][example-4x4-plots]
 
-Our Ideas
-=========
-Use all the spatial dimensions to aid in data exploration.
+## Our Ideas
+
+The experiment is restricted to three drugs, due to physical limitations in conducting the experiment and
+also for a simpler analysis of the results. The three drugs can easily be represented in three dimensional (3D)
+space, and we began to explore 3D visualisations. Although these are a good starting point, one needs to be
+careful as to how the fourth variable, the intensity of the Green Flourescent Protein (grp) is represented.
+A naive selection of 3D visualisation may not support the visual query for detecting this intensity, but instead
+hide it. A common visualisation used to represent four dimensional data is a 3D surface diagram **[see figure below]** where colour is
+used on the surface itself to represent the fourth variable - much like a heatmap. We discovered that this
+type of visualisation was in fact being used in reports to illustrate their results. There are many pitfalls
+to this type of visualisation, one of them is that the surface occludes itself, hiding colours in the background.
+The other is that it is very difficult to determine both the 3D coordinates of the point where a colour is
+located on the surface, and the value of the actual colour! Another pitfall is that the surface is a continuous
+interpolation of the discrete quantities, and we cannot tell which quantities were actually used.
+
+![alt text][example-4d-visualisation_03]
+[TODO: Figure number]
+
+TODO: discuss 2D drawings
+
+We began exploring other 3D visualisations, such as the 3D scatterplot **[See figure]**. This visualisation is
+favourable to the 3D surface visualisation both because it does not occlude itself and because the scatter points
+are discrete. However, on close inspection there are a few potential issues with visual queries. The first is that
+the points are drawn without perspective (i.e from an orthographic projection) which provides no visual information
+about where the point lies on the scatterplot. This is complicated further when points are clustered together.
+It's worth noting here that an orthographic projection would actually be preferred to a perspective projection, which
+distorts objects in the image with respect to distance. The use of an orthographic projection for this type of visualisation
+is both a benefit and a hindrance. One solution to this problem is to draw lines from the points to the planes of the axes
+**[as shown in figure]**, however this adds too much noise to the image, hampering visual queries.
+
+![alt text][example-4d-visualisation_01]
+![alt text][example-4d-visualisation_02]
+
+We began to realise that a single 3D diagram would not be sufficient in analysing the results. Two dimensional
+(2D) visualisations would likely be needed alongside a 3D diagram. This would allow us to keep the 3D visualisation simple
+and use it, for example, in visual queries that compare the results of neighbouring points and plates (i.e. the physical space!).
+The 2D visualisation could then be used for the variables most critical in decision making (i.e. the logic).
+
+We identified the two variables critical to analysing the results, which would be used in the 2D visualisation. These are
+the intensity of the Green Flourescent Protein (i.e. the Luminosity) and the Fractional Inhibitory Concentration (FIC) **[describe this somewhere]**.
+A 2D scatterplot would contain the visual queries needed to make accurate comparisons of all the cells, using
+these two variables. We are interested in the point which has the lowest FIC value and the lowest Luminosity: a point very
+close to the origin. This satisfies our logical decision making in identifying the best point from the experiment, all we
+need is to map this 2D point back to the cell containing the 3 concentration values: a 3D point.
+
+The 3D visualisation was then designed exactly for this mapping. It serves the visual queries which help to identify the
+exact cell which we are interested in on the plates. Necessarily, it made sense to use the physical association of the cells
+on plates in the visualisation. We chose to represent planes in the 3D space as the plates, stacked vertically on top of
+one another. The concentration of Fusidic Acid (FA) only differs by plate, while the concentrations of Rifampicin (RIF)
+and Isoniazid (INH) differ by cell. This makes the FA concentration a good candidate for the vertical distance between the
+stacked plates, while RIF and INH are well suited for the two dimensions that define the plane.
+
+The first design for the 3D visualisation used a physical association between the stacked planes and the plates.
+A plane in 3D takes up zero space along its normal vector (the axis running perpendicularly through the plane),
+whereas the plane itself is divided into non-zero square cells. This meant that the discrete values for RIF and INH
+would be represented by cells with length of, say, Y that would span a 2D surface with area YxY.
+In contrast, the discrete FA value would take up zero surface area. Our initial concern was that this discrepancy
+in surface area taken up between the three drug concentrations would be misleading to the user, and for this
+reason the first iteration of the design **[left on Figure below]** represented the points as cubes instead of planes.
+The concentrations would then be represented equally in surface area.
+
+![alt text][early-design-plate-iterations]
+
+However, this introduced several issues. The most important issue is that it deviated from the physical association
+of the plates. We had now also added more occlusion, which is most prominent on the lower lying plates since those have
+similar concentration values. Deciding that the use of cubes with equal surface area was unjustified, the second iteration
+used flat planes. This clearly simplifies the visual query, as the thickness of the planes is of no relevance, but we still
+had an occlusion problem. Fortunately, the Luminosity values from the initial spreadsheet are either 65000 or range between 20000 and 23000.
+This is an almost binary jump in value, indicating that the concentrations either have no effect at all or a similar effect.
+For the most part we are not interested in concentrations which have no effect, so a slider was introduced to filter
+these cells out of the visual query, and in so doing solve our occlusion problem.
+
+The visualisation is also the subject of a similar issue to the discrepancy in surface area - a spatial discrepancy.
+The squares in the plane represent the physical cells of the plate, and sit alongside one another regardless of the
+difference in concentration to their neighbouring cells. At the same time the plates are vertically stacked with a
+distance proportional to the FA concentration. A quick drawing was done to visualise what it would look like if we
+were to separate the cells according to their spatial relativity, but this would clearly break down the physical
+association completely and degrade the visualisation into a 3D scatterplot with squares as points - an issue in itself.
+
+The proportional vertical stacking added no value to the physical association
+intended for the visual query and still had the occlusion problem. As a result the design was refactored to use
+uniform vertical spacing, obliterating the occlusion issue and associating plates in the order of their FA value.
+**[See figures below]**
+
+![alt text][sketch-plate-cells-scatterplot]
+![alt text][early-implementation-plates-stacked_02]
+
+The final problem of colour differentiation would be tackled during implementation. With the designs of our 3D and
+2D visualisations in place, we could focus on laying them both alongside one another. Since this was going to be
+displayed on a web page, a simple web based grid layout was chosen **[See figure below]**.
+
+![atl text][sketch-layout]
+
+TODO: talk about the 1D efficacy distance which was taken out, and the exponential curve which was made obselete by
+the 2D scatterplot.
+
+# Drawings not yet in use
+
+![alt text][spreadsheet-data]
+
+![alt text][graphical-representation-of-checkerboard-assay]
+
+![alt text][drug-interaction-plates]
 
 ![alt text][early-design-stacked-plates_02]
 
 ![alt text][early-design-3d-bar-chart]
-
 ![alt text][early-design-3d-scatterplot]
 
-![alt text][early-design-plate-iterations]
-
-Use standard two dimensional charts to communicate this information effectively.
-
-![atl text][sketch-layout]
-
-Early implementation
-
 ![alt text][early-implementation-plates-stacked_01]
-
-![alt text][early-implementation-plates-stacked_02]
-
-![alt text][sketch-plate-cells-scatterplot]
-
-Examples of 4d visualisations
-
-
-
 
 
 
@@ -153,7 +217,7 @@ Examples of 4d visualisations
 
     <div class="container">
         <div class="row">
-            <div id="report-target" class="col-sm-12"></div>
+            <div id="report-target" class="col-sm-12 markdown-body"></div>
         </div>
     </div>
 
