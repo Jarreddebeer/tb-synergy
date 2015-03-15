@@ -278,11 +278,10 @@ We also want to optimise for dosage of the drug. The lower the dosage of the
 total drug combination, the lower the cost to produce that drug. Therefore it's
 not just raw efficacy that's desired, but a combination of low dosage and high
 efficacy. The dosage of drug combinations are generally compared using the
-Fractional Inhibitry Concentration Index (referred here simply as FIC) of that
+Fractional Inhibitry Concentration Index (referred here simply as FIC index) of that
 combination - a linear sum of the drug concentrations weighted according to the
 Minimum Inhibry Concentration (MIC). See Addendum A for calculating these
-values. A FIC which is smaller than 0.4 is seen to be synergistic and greater
-than 1 is seen as antagonistic. 
+values. 
 
 At a high level, this means that success is determining the trends of
 combination of the dosages of the drugs. For example, we'd want to know whether
@@ -303,7 +302,8 @@ dimensioanl data as they currently have no way to do this themselves.
 
 Below is a ranked list of visual queries, from most important to least
 important. Here, we define a drug combination as being most effective if it is
-the combination of drugs that inhibits the growth of TB with the lowest FIC.
+the combination of drugs that inhibits the growth of TB with the lowest FIC
+index.
 
 - Which drug combination is the most effective?
 - What, if any, drugs interacted antagonistically?
@@ -349,10 +349,10 @@ logic).
 
 We identified the two variables critical to analysing the results, which would
 be used in the 2D visualisation. These are the intensity of the Green
-Flourescent Protein (i.e. the Luminosity) and the FIC.  A 2D scatterplot would
+Flourescent Protein (i.e. the Luminosity) and the FIC index.  A 2D scatterplot would
 contain the visual queries needed to make accurate comparisons of the two
 variables, using all the cells. We are interested in the point which has the
-lowest FIC value and the lowest Luminosity: a point very close to the origin.
+lowest FIC index and the lowest Luminosity: a point very close to the origin.
 This satisfies our logical decision making in identifying the best point from
 the experiment, all we need is to map this 2D point back to the cell containing
 the 3 concentration values: a 3D point.
@@ -435,10 +435,10 @@ depicted in Figure 13.
 </center>
 
 In the top-middle of Figure 13 is a grid with the 'frontier', values with the
-lowest FIC that inhibited the drug growth, and hyperbolic curve currently used
+lowest FIC index that inhibited the drug growth, and hyperbolic curve currently used
 for analysing data as illustrated in Figure 3. The point on the hyperbolic
 curve whose distance is closest to the origin represents the cell with the
-optimum FIC to Luminosity values. On the bottom right is a horizontal, 1
+optimum FIC index to Luminosity values. On the bottom right is a horizontal, 1
 dimensional graph which was designed to plot this distance. It extracts the
 distance value out of the 2D graph and onto the 1D graph for an easier visual
 query.  The hyperbolic curve, and consequently the 1D graph, have been made
@@ -448,7 +448,7 @@ FA value has been included to interact with and observe the change in Luminosity
 values between the plate concentrations of FA.
 
 The highlighted point on the scatterplot is associated to the highlighted cell
-on the 3D visualisation as being the most optimum FIC to Luminosity value, and
+on the 3D visualisation as being the most optimum FIC index to Luminosity value, and
 illustrates the use of colour highlighting to map points on the scatterplot to
 cells on the plates.
 
@@ -525,6 +525,42 @@ sections.
 
 This ended up working surprisingly well - we each chose sections we were
 passionate about and we think that the work shows it.
+
+## Apprendix A: Calculation of FIC Index
+
+Here we give a brief summary of what FIC, MIC and FIC indices are and how they are
+calculated. 
+
+The Fractional Inhibitory Concentration of a drug concentration is defined
+as the concentration of that drug divided by the Minimum Inhibitory
+Concentration (MIC) of that drug[7]. The MIC of a drug is defined as the lowest
+concentration of that drug such that growth of the microorganism it is targeting
+is inhibited[8].
+
+The overall concentration of a group of drugs can be grouped together using a
+FIC Index which is the sum of the FIC values of the drugs in that
+combination[7]. If the FIC index of a drug combination of 2 drugs is below 0.4
+and inhibits a microorganism's growth then it is termed synergistic; if the FIC
+index is above 1 and the microorganism's growth is not inhibited then the
+combination is termed antagonistic.
+
+To see why this is the case, consider a drug combination where two drugs each
+have a FIC of 0.5. This means that each by itself is at half the concentration
+normally needed to inhibit the growth of the microorganism itself. This means
+that together, with a FIC index of 1, they definitely should be able to inhibit
+the growth.  If they can't, then they must be combatting each other somehow and
+are therefore antagonistic. If we have two drugs which each have FICs of 0.2,
+then they're both far under what they would normally be required to inhibit drug
+growth but if they do so together, with a FIC index of 0.4, that would indicate
+that they substantially aid each others combatting of the virus in a synergistic
+way.
+
+### Useful bits
+
+Minimum inhibitory concentrations (MICs) are defined as the lowest concentration
+of an antimicrobial that will inhibit the visible growth of a microorganism
+after overnight incubation
+
 ## Bibliography
 
 [1] 
@@ -539,6 +575,46 @@ Figure S2. Synergistic interaction between spectinomycin and bromperidol against
 [5] Mathworks. Visualizing Four-Dimensional Data, http://www.mathworks.com/help/matlab/examples/visualizing-four-dimensional-data.html
 
 [6] https://github.com/Jarreddebeer/tb-synergy
+
+[7] 
+## Synergy assessed by checkerboard a critical analysis
+[Paper download](http://www.academia.edu/download/30442111/Synergy_assessed_by_checkerboard._A_critical_analysis..pdf)
+
+### BibTex
+    @article{hsieh1993synergy,
+        title={Synergy assessed by checkerboard a critical analysis},
+        author={Hsieh, Michael H and Chen, M Yu and Victor, L Yu and Chow, Joseph
+        W},
+        journal={Diagnostic microbiology and infectious disease},
+        volume={16},
+        number={4},
+        pages={343--349},
+        year={1993},
+        publisher={Elsevier}
+    }
+
+[8]
+## Determination of minimum inhibitory concentrations
+
+[Paper download](http://jac.oxfordjournals.org/content/48/suppl_1/5.full.pdf+html)
+
+### BibTex
+    @article{andrews2001determination,
+    title={Determination of minimum inhibitory concentrations},
+    author={Andrews, Jennifer M},
+    journal={Journal of antimicrobial Chemotherapy},
+    volume={48},
+    number={suppl 1},
+    pages={5--16},
+    year={2001},
+    publisher={Br Soc Antimicrob Chemo}
+    }
+
+[9] Meletiadis, Joseph, et al. "Defining fractional inhibitory concentration
+index cutoffs for additive interactions based on self-drug additive
+combinations, Monte Carlo simulation analysis, and in vitro-in vivo correlation
+data for antifungal drug combinations against Aspergillus fumigatus."
+Antimicrobial agents and chemotherapy 54.2 (2010): 602-609.
 
 [graphical-representation-of-checkerboard-assay]:/report/img/graphical-representation-of-checkerboard-assay.png "Graphical representation of checkerboard assay"
 [drug-interaction-plates]:/report/img/drug-interaction-plates.png "Drug interaction plages"
