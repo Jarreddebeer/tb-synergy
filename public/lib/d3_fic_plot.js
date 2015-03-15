@@ -21,6 +21,7 @@ var numStepsC = 7;
 var numStepsB = 9;
 
 d3Chart.create = function(el, props, state) {
+  var that = this;
   this.props = props;
   this.props.colours = [
               '#B2182B',
@@ -32,8 +33,11 @@ d3Chart.create = function(el, props, state) {
               '#878787',
               '#4D4D4D']
 ;
-  this.props.color = d3.scale.quantile()
-                        .domain([0,65000])
+  var lumoDomain = [0,65000];
+  this.props.color = d3.scale.linear()
+                        .domain(this.props.colours.map(function(col, i){
+                            return i*(lumoDomain[1] - lumoDomain[0])/that.props.colours.length + lumoDomain[0];
+                        }))
                         .range(this.props.colours);
 
 
