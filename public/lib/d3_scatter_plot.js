@@ -210,9 +210,9 @@ d3Chart._fadeInTooltip = function(sel) {
 }
 
 d3Chart._formatDrugCon = function(d) {
-    return "Drug A: " + this._formatNumber(d.a) + "<br/>" +
-    "Drug B: " + this._formatNumber(d.b) + "<br/>" +
-    "Drug C: " + this._formatNumber(d.c) + "<br/>"
+    return "FA: " + this._formatNumber(d.a) + "<br/>" +
+    "RIF: " + this._formatNumber(d.b) + "<br/>" +
+    "INH: " + this._formatNumber(d.c) + "<br/>"
 }
 
 d3Chart._getSVGSymbol = function(plate_num) {

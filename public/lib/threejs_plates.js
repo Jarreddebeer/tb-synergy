@@ -301,9 +301,9 @@ threejsPlates._setLabels = function() {
 
     // generate axes labels
     this._addTextLabel("(0, 0, 0)", this.cSize*7+25, -50, this.cSize*7);
-    this._addTextLabel("A", -this.cSize, 2.5*this.hSize, this.cSize*7);
-    this._addTextLabel("B", this.cSize*13, 0, this.cSize/2*8);
-    this._addTextLabel("C", this.cSize/2*13+this.cSize/2, 0, this.cSize*12);
+    this._addTextLabel("FA", -this.cSize, 2.5*this.hSize, this.cSize*7);
+    this._addTextLabel("RIF", this.cSize*13, 0, this.cSize/2*8);
+    this._addTextLabel("INH", this.cSize/2*13+this.cSize/2, 0, this.cSize*12);
 
     // generate the 'volume' labels
     var volumeGeo = new THREE.Geometry();

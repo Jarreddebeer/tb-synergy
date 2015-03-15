@@ -60,7 +60,7 @@ d3Chart.create = function(el, props, state) {
       .attr("class","label")
       .attr("x", (this.props.width/2))
       .attr("y", this.props.margins.bottom - xAxisYOffset)
-      .text("Drug B (µg/ml)");
+      .text("RIF (µg/ml)");
 
   svg.append("g")
       .attr("id", "ficcurves-y-axis")
@@ -71,7 +71,7 @@ d3Chart.create = function(el, props, state) {
       .attr("y", - yAxisYOffset)
       .attr("x", -(this.props.height - this.props.margins.top)/2)
       .attr("dy", ".71em")
-      .text("Drug C (µg/ml)")
+      .text("INH (µg/ml)")
 
   this.props.svg = svg;
   this.update(el, state);
@@ -182,9 +182,9 @@ d3Chart._fadeInTooltip = function(sel) {
 }
 
 d3Chart._formatDrugCon = function(d) {
-    return "Drug A: " + this._formatNumber(d.a) + "<br/>" +
-    "Drug B: " + this._formatNumber(d.b) + "<br/>" +
-    "Drug C: " + this._formatNumber(d.c) + "<br/>" +
+    return "FA: " + this._formatNumber(d.a) + "<br/>" +
+    "RIF: " + this._formatNumber(d.b) + "<br/>" +
+    "INH: " + this._formatNumber(d.c) + "<br/>" +
     "FIC: " + this._formatNumber(d.fic) + "<br/>" +
     "Luminosity: " + this._formatNumber(d.lumo);
 }
