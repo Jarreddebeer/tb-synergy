@@ -200,7 +200,7 @@ d3Chart._displayTooltip = function(elm, d, pos) {
      // Tooltips
     this._fadeInTooltip(d3.select(".tooltip"));
     d3.select(".tooltip").html(this._formatDrugCon(d))
-           .style("left", left + 60 + "px")
+           .style("left", left - 20 + "px")
            .style("top", top - 50+ "px");
 
 }

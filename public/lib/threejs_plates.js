@@ -6,21 +6,23 @@ THREE.typeface_js.loadFace(typeface);
 var threejsPlates = {};
 
 threejsPlates.create = function(el, props, state) {
-
+    var that = this;
     this.props = props;
-    this.props.colours = [
-        0xB2182B,
-        0xD6604D,
-        0xF4A582,
-        0xFDDBC7,
-        0xE0E0E0,
-        0xBABABA,
-        0x878787,
-        0x4D4D4D
-    ];
-    this.props.colour = d3.scale.quantile()
-                         .domain([0, 65000])
-                         .range(this.props.colours);
+  this.props.colours = [
+              '#B2182B',
+              '#D6604D',
+              '#F4A582',
+              '#FDDBC7',
+              '#E0E0E0',
+              '#BABABA',
+              '#878787',
+              '#4D4D4D']
+   var lumoDomain = [0,65000];
+   this.props.colour = d3.scale.linear()
+                            .domain(this.props.colours.map(function(col, i){
+                                return i*(lumoDomain[1] - lumoDomain[0])/that.props.colours.length + lumoDomain[0];
+                            }))
+                        .range(this.props.colours);
     this.mouse = new THREE.Vector2();
     this.cSize = 50;
     this.hSize = 200;
