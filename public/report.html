@@ -457,9 +457,45 @@ cells on the plates.
 
 #### Overview
 
+The design should help the visual queries by composing the different diagrams in such a way that extracting
+visual information is easy. Inappropriately placed diagrams can compete against one another for
+visual attention and lead the eye away from critical data. Viewer's of film and animation generally require
+three seconds of exposure to a shot before understanding what's happening in it. Similarly, the design
+should allow the user to grasp the visual queries after three seconds of exposure to it, including how to
+interact with it.
+
+The initial design had reserved four spaces in the layout for diagrams. During development it became
+clear that two of the diagrams would become obsolete: The horizontal FIC distance, and the Hyperbolic curve
+representing the 'Frontier' points. This wasn't seen as a problem, as we had decided to include an area
+for filters which would take the form of sliders and could easily replace the FIC distance diagram. The
+'Frontier' points were overlayed onto the plate diagram and so this had no effect on the layout if it were
+to be left out.
+
 #### Mouse Interactions
 
+The mouse is the only form of interaction with the web page. Since it is a pointing device it is only
+able to focus on one point at any give time which could be problematic if the diagrams were isolated
+components - no visual relationships could be drawn to connect the information in the three diagrams.
+It was therefore necessary to highlight the pieces of information which related to what the user's
+mouse was focusing on at any given point in time and on any of the diagrams. We made use of mouse hover
+to identify which elements to highlight, and special care was taken with the implementation to make sure
+that all the components would respond to this event at the same time.
+
 #### Filters
+
+The 2D scatterplot is very dense, containing points for every cell on all the plates. Making matters
+worse, most of the points are clumped together. This was our initial justification for filters:
+The user needed to be able to filter out ranges of data which were not relevant. The filters were
+necessary to assist with the visual queries, and should not be disconnected from the visual associations
+already provided by the diagrams. We chose to use range sliders to align with the axes and make use
+of their existing labelling and visual association.
+
+<center>
+![alt text][design-axes-label-association]
+
+**Figure 14**: Using axes labels to associate filters
+</center>
+
 
 #### Answering Queries
 - Which drug combination is the most effective?
@@ -473,7 +509,58 @@ performance of the other drug combinations?
 
 ### Motivation for Design
 
+The visualisation is constrained to being viewed on a web page, and the user would expect a 2D layout divided
+into a grid. The layout and sizing of cells in the grid make up the key features of the design, and are instrumental
+in leading the eye to important visual information. The Golden ratio is well known in painting
+for leading the eye into the most interesting parts of the painting and holding the viewer’s attention. This is also
+known as the ‘Rule of thirds’, and for this reason both the initial design and the final implementation
+honour this rule by breaking the grid up into thirds, as seen in Figure 14.
+
+
+Elements with a portrait layout (i.e. are taller than they are wide), such as the 3D stacked plates, can be used to take
+up a third of the horizontal space and at least two thirds vertical space. Similarly, Elements with a portrait layout 
+(i.e. are wider than they are tall) can be used to take up two thirds of the horizontal space and at least a third
+of the vertical space. Elements which are square in size can be used to fill in remaining space.
+
+In order to make such an arrangement the elements needed to be analysed for their most appropriate orientation.
+The 3D stacked plates would certainly only work in a portrait layout, while the 2D scatterplot was more flexible
+in that it could either be used in a square or a landscape layout. The sliders are the most flexible in that they can either 
+be vertically or horizontally aligned or even stacked next to one another to form a square layout. The 2D plate
+diagram could be used as a square or rectangular layout.
+
+With these orientations in mind, we considered the importance of the visual information being displayed. The 2D scatterplot
+clearly had the most information and the largest value ranges. It is also used to compare and determine the most efficient
+point from the test, and needs to be very accurate and usable. The 3D stacked plates gave an overall, physical illustration
+of all the plates in the test, and the 2D plate gives similar information but in more detail. We chose to emphasise the
+2D scatterplot by maximising its grid space and using a square layout, taking up two thirds of the screen space. The other
+two diagrams would take up the remaining third, and the filters - being most flexible - would fill in. See figure 14.
+
+<center>
+![alt text][design-rule-of-thirds]
+
+**Figure 14**: Rule of thirds used in grid
+</center>
+
+The sliders were labelled by the variables which they influenced, these are: The INH concentration, RIF concentration,
+Plate number, and Luminosity filters. Coincidentally, these ranges each appeared only once across the axes of the three different
+diagrams. These axes were already labelled, and the user would have established an association with them. It made sense to
+position the filters such that their interaction was described by the visual association to the axes! Care was taken to place
+the filters on the opposite side of the axes so they would not compete for attention of the axes’ labels.
+
 ## Analysis of Design
+
+<center>
+![alt text][design-final]
+
+**Figure 15**: Final implemented design
+</center>
+
+The filters, without their labels, are possibly too simplistic. Although their association with the axes is very strong,
+it is not visually clear that the vertical slider positioned to the right of the 3D stacked plates actually selects the
+active plate which is displayed in the 2D plate diagram above it. The slider is also aligned next to the labels for the FA
+concentration, which can cause an association between itself and FA concentrations - instead of the plate number. This
+confusion could be avoided by introducing a plate number label next to the plate itself, and a plate number heading for the
+2D plate diagram.
 
 ## Conclusions
 
@@ -615,6 +702,9 @@ Antimicrobial agents and chemotherapy 54.2 (2010): 602-609.
 [sketch-layout]:/report/img/sketch-layout.png "Sketch design for the layout"
 [early-implementation-plates-stacked_01]:/report/img/early-implementation-plates-stacked_01.png "Early implementation, stacked plates 1"
 [early-implementation-plates-stacked_02]:/report/img/early-implementation-plates-stacked_02.png "Early implementation, stacked plates 2"
+[design-axes-label-association]:/report/img/design-axes-label-association.png "Association with filters and axes labels"
+[design-rule-of-thirds]:/report/img/design-rule-of-thirds.png "Grid layout utilising rule of thirds"
+[design-final]:/report/img/design-final.png "Final implemented design"
 [example-4d-visualisation_01]:/report/img/example-4d-visualisation_01.png "Example 4d visualisation, 3d scatterplot with colour"
 [example-4d-visualisation_02]:/report/img/example-4d-visualisation_02.png "Example 4d visualisation, 3d scatterplot with tails"
 [example-4d-visualisation_03]:/report/img/example-4d-visualisation_03.png "Example 4d visualisation, 3d surface with colour"
