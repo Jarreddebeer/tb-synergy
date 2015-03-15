@@ -30,6 +30,9 @@
       "react": "npm:react@^0.12.2"
     }
   },
+  "dependencies": {
+    "jspm": "^0.14.0"
+  },
   "devDependencies": {
     "connect": "^3.3.4",
     "gulp": "^3.8.11",
