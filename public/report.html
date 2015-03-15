@@ -455,6 +455,19 @@ cells on the plates.
 
 #### Overview
 
+#### Mouse Interactions
+
+#### Filters
+
+#### Answering Queries
+- Which drug combination is the most effective?
+- What, if any, drugs interacted antagonistically?
+- Which drug pairs were the most effective?
+- Which drug was most effective by itself? 
+- For a set concentration for a pair of drugs, what is the lowest dosage of the
+remaining drug such that it still inhibits the growth of TB?
+- As we increase the concentration of a drug, how does that generally affect the
+performance of the other drug combinations?
 
 ### Motivation for Design
 
@@ -462,9 +475,55 @@ cells on the plates.
 
 ## Conclusions
 
-## Future Work
+After a number of designs, we found that the best way to visualise 4D data is to
+couple a 3D visualisation which gives a high level overview with two 2D ones in
+order to give large amounts of detail. The final implemented design enabled one
+to easily answer a number of the high priority visual queries but did not answer
+some of the mid to low priority ones without having to incorporate filtering. 
+
+In order to be a successful, publishable visualisation for this type of data,
+more work is reccomended.
+
+An important first step for future work for this visualisation would be
+verification that we have made a substantial improvement over the current
+techniques. This would probably take the form of a user evalutation and
+experimenetation.
+
+In order to be widely used, the implementation of this visualisation would need
+to improved substantially.  Right now, the design resides as a static
+visualisation in a github repo[6]. In order for this to be useful, one would
+need to at the very least
+- create a data pipeline that allows researchers to add their own raw data, have
+that processed and then visualised
+- allow researchers to store their results
+- provide an easy way for researchers to export the visualisations for inclusion
+in a publication
+- a "raw data" mode so that researchers can view the data in tabular or some
+such format.
+
+Due to time constraints, we were not able to explore the possibility of having
+the entire visualisation in 3D, having the user able to rapidly explore entirely
+in a 3D space. Future work could focus on using our 3D plate visualisation as a
+base for other 3D visualisations of this data, allowing the user to manipulate
+the camera and have other data projected in this 3D space rather than having 2D
+plots augmenting it.
 
 ## Work Split
+
+We split the work right down the middle, with each member having different
+responsibilities for each of the major areas of work.
+
+Jarred handled the design and implemention for the 3D visualisation while
+Steven was responsible for the design and implemention of the 2D visualisations.
+Jarred created the application scaffolding (a static javascript page) while
+Steven worked on the interactive framework (allowing one to interact with
+elements on the page). Jarred finalised the page layout while Steven worked on
+colouring for the heatmap. Jarred wrote the sections on 3D visualisations while
+Steven did the sections of 2D, with both of us colloborating on the other
+sections.
+
+This ended up working surprisingly well - we each chose sections we were
+passionate about and we think that the work shows it.
 
 ## Bibliography
 
@@ -474,11 +533,12 @@ Reference: Figure S2. Synergistic interaction between spectinomycin and bromperi
 [2] Figure S1. Graphical representation of a Checkerboard Assay. From Synergistic drug combinations for tuberculosis therapy identified by a novel high throughput screen. Ramón-García, S. et al.
 
 [3] Automation Tool for Rapid Design of Space Systems, http://start1.jpl.nasa.gov/caseStudies/autoTool.cfm
-# Visualising Synergistic drug combinations for tuberculosis therapy
 
 [4] Parallel coordinate plot, Fisher's Iris data, http://en.wikipedia.org/wiki/Parallel_coordinates
 
 [5] Mathworks. Visualizing Four-Dimensional Data, http://www.mathworks.com/help/matlab/examples/visualizing-four-dimensional-data.html
+
+[6] https://github.com/Jarreddebeer/tb-synergy
 
 [graphical-representation-of-checkerboard-assay]:/report/img/graphical-representation-of-checkerboard-assay.png "Graphical representation of checkerboard assay"
 [drug-interaction-plates]:/report/img/drug-interaction-plates.png "Drug interaction plages"
