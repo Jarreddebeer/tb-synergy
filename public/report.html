@@ -24,77 +24,263 @@
 
 <div id="report-source" style="display: none;">
 
-# Visualising Synergistic drug combinations for tuberculosis therapy
+# Platevis: Visualising 3D Assays of Combinations for Tuberculosis Therapy
 
+## Introduction
 
-three drugs tested in combination:
+### Problems with researching TB
 
-- RIF (rifampicin)
-- INH (isoniazid)
-- FA (fusidic acid)
+According to the (CDC)[http://www.cdc.gov/tb/statistics/], Tuberculosis (TB) one
+of the most deadly diseases, with a third of the world's population infected.
+It's an important disease in South Africa as it is the leading cause of death of
+those who have HIV/AIDS. As such, it is important that effective drugs for its
+treatment are discovered.
 
-![alt text][drug-interaction-plates]
+Developing drugs for TB is complex as it is treated with a combination of
+medications rather than one on its own. This means that during drug discovery,
+one cannot simply test the new drug on its own as it could have adverserial
+reactions with other drugs. This means that in order to see if a drug is
+effective, you need to test it with a combination of drugs.
 
-Reference: Figure S2. Synergistic interaction between spectinomycin and bromperidol against M. tuberculosis. From Synergistic drug combinations for tuberculosis therapy identified by a novel high throughput screen. Ramón-García, S. et al.
+Usually this is done in the final stages of the drug's development in clinical
+trials on human subjects. This is problematic however, because at this stage
+large amounts of money has already been invested in the drug. If the drug has an
+adversarial interaction with any of the others in the standard treatements, then
+it cannot be used. Recently some groups, such as UCT's
+[IDM](http://www.idm.uct.ac.za/) have been testing drug combinations in the lab,
+allowing much earlier detection of drug synergies and adverities. 
 
-Five plates set up, each compromised 2-fold dilutions of RIF down the columns, and 2-fold dilutions of INH across the rows.
+To compare two drugs, you use an assay depicted in Figure 1. For our data, an assay
+is a series of petri dishes, each which contain a certain amount of TB treated a
+certain concentration of two drugs. The concentration of the drugs in a given
+dish is given by its position in the grid. The TB microbials are treated with a
+compound which makes them give off light so you can measure a drug's efficacy by
+determining how much light a dish is giving off. 
 
-FA was added at specific concentration for each of 4 plates while the fifth plate in the stack contained 0 ug/ul.
+<center>
+![Figure 1][drug-interaction-plates]
 
-The values are fluorescence intensities from a green fluorescent protein (GFP) reporter that is expressed in the bacterium. The maximum signal (i.e. uninhibited growth) is set at a limit of 65000.
+**Figure 1:** An assay examining the synergies of two drugs for TB. Sourced from
+[1].
+</center>
 
-## Problem
+However, comparing two drugs is unfortunately not enough for emulating real
+life conditions - treatment of TB consists of at least three drugs. This is done
+with a 3D assay: you run multiple 2D assays each with a third drug with
+different concentrations. This means that you essentially have four dimensional
+data: each of the three drug concentrations and the luminosity of the plate.
 
-- status quo: drug combinations are only tested late in the drug discovery process
-- solution: test drug combinations from earliest point
-- new problem: TB is treated with combinations of 3 or 4 drugs at a time, visualising four dimensional data is difficult for those without CS degrees (and, it turns out, those with one too)
+Currently, researchers have no way to effectively visualise this 4D data,
+slowing their research. As effective drugs can save the life of hundreds of
+thousands, is is important they are able to grapple with this high dimensional
+data.
 
-## Data
+### Data Provided
 
+For our data, we are looking at three drugs in combination:
+- rifampicin (RIF)
+- isoniazid (INH)
+- fusidic acid (FA)
 
-Intensities of Green Flourescent Protein in bacterium on 6 plates, divided into cells.
+Five plates were set up, each with different concentrations of RIF down the
+columns and different concentrations of INH across the rows. FA was added at
+specific concentration for each of 5 plates, with the first getting no FA and
+the rest getting approximately double the concentration of the ones that
+preceeded it.
 
-Each cell contains a range of dilutions of
-RIF, INH, each plate has a different dilution of FA.
+The efficacy was measured with fluorescence intensities from a green fluorescent
+protein (GFP) reporter that is expressed in the bacterium. The maximum signal
+(i.e.  uninhibited growth) is set at a limit of 65000. 
 
-For computer scientists: 4-tuples, first three entries are dosages and the third is the drug’s “efficacy”. 
+The data is stored in spreadsheets depicted in Figure 2. Essentially, the data
+is a four tuple: three concentrations and a measure of effectiveness from the
+luminosity.
 
+<center>
 ![alt text][spreadsheet-data]
 
-Reference: 3D Assay (RIF, INH, FA) spreadsheet provided by Digby Warner.
+**Figure 2:** The original specification of the data provided by Digby Warner.
+</center>
 
-## Objective
+### Profile of Users
 
-Overall: find the combination of drugs that provides the greatest effect at the lowest dosage.
+The design caters to two types of users which we profile briefly below. Both are
+expected to be literate in the domain - they should understand the details of a
+3D assay the what metrics to evaluate this data on. 
 
-Two stages:
-- Data exploration: what happened?
-- Data presentation: how do I communicate it?
+#### Professor Doctorson
 
-## Visual Queries
+Professor Doctorson has Doctorates in both Epidemiology and Virology.  She
+manages dozens of laboratories all looking at multiple combinations of drugs
+wants to be able to quickly understand whether a particular experiment was
+successful in finding an effective treatment. She doesn't care about the
+particular values, she just wants to be able to very easily get an overview of
+the data that she can then include in a paper if it proves promising. 
 
+#### Stu Dent
+
+Stu is a masters student working in Professor Doctorson's lab. He is responsible
+for running and evaluating the 3D assays that are being run. If Stu is able to
+find an effective combination, he will be able to become fifth authour on one of
+Prof. Doctorson's papers, so he is very invested in the detail of each
+particular experiment. Stu wants to know how the experiment went as a whole but
+also wants to be able to drill down and see any patterns. Once he has established
+any patterns, Stu wants effective visualisations to be able to present them to
+Professor Doctorson to illustrate them as quickly and effectively as possible.
+
+## Related Work
+
+Virologists use what are known as FIC curves to visualise the results of a
+single assay as depicted in Figure 3. The points on the curves are the drug
+combination in each row of the assay with the lowest FICs that inhibited the
+growth of TB. This corresponds exactly to the rightmost dishes on the plate in
+Figure 3. Researchers use this chart to determine the drug with the best FIC
+index by finding the point closest to the origin as highlighted on the FIC
+Curve.
+
+The largest limitation of these diagrams is that they only show 2D data and do
+extend naturally to 3D data. Even as a 2D visualisation, they have some problems
+for data exploration as FIC curves hide data when they don't need to. One can
+see a superset of information on the curve on the plates on the right as the
+curve is simply the rightmost blue plate in each row. However the plates show
+information the curve does not - how well each drug performs in isolation and
+exactly how well each drug performs. 
+
+<center>
 ![alt text][graphical-representation-of-checkerboard-assay]
 
-Reference: Figure S1. Graphical representation of a Checkerboard Assay. From Synergistic drug combinations for tuberculosis therapy identified by a novel high throughput screen. Ramón-García, S. et al.
+**Figure 3:** From left to right, an abstraction of assay data to show where the
+points on the FIC curve arise from, a FIC curve and the actual assay where the
+data was sourced. Sourced from Digby Warner without attributation.
+</center>
 
-- Where is the "frontier"? (values with the lowest dosage that's effective).
-- Which drugs are most effective on their own/in a pair?
-- Are there any adversarial interactions?
-- Is a drug active by itself?
+Figure 4 shows a star chart. These are good at showing data with a large number
+of dimensions. Each point is a line and its value for each dimension is marked
+by its distance from the origin on each of the marked dimension lines. 
 
-## Existing Visualisations for high dimensional data
+This visualisation is effective at showing a small number of high dimesional
+points as seen in Figure 4. However, our data has hundreds of points which if
+displayed using this visualisation would make it hard to individual points and
+trends. As this is important for our visual queries, it is unsuitable for our
+current task.
 
+<center>
 ![alt text][example-star-plot]
+
+**Figure 4:** A star chart comparing space system designs [3].
+</center>
+
+
+Figure 5 shows a parallel coordinate plot. This is similar to a star plot in
+that each point is a line and its value for a dimension is its height on a
+dimension line. It's essentially a star chart whose lines have been made
+parallel. The same criticisms of the star chart are valid for it: we simply have
+too many points for this to be displayed cleanly. 
+
+<center>
 ![alt text][example-parallel-coordinate-plot]
 
-Figure 1 reference: Automation Tool for Rapid Design of Space Systems, http://start1.jpl.nasa.gov/caseStudies/autoTool.cfm
-Figure 2 reference: Parallel coordinate plot, Fisher's Iris data, http://en.wikipedia.org/wiki/Parallel_coordinates
+**Figure 5:** A parallel coordinate plot showing the dimesions of flower petals
+[4]
+</center>
+
 
 ![alt text][example-abc]
 ![alt text][example-4x4-plots]
 
 Figure 1 Reference: could not find
 Figure 2 Reference: Mathworks. Visualizing Four-Dimensional Data, http://www.mathworks.com/help/matlab/examples/visualizing-four-dimensional-data.html
+## Requirements and Associated Visual Queries
+
+### Analysis of Requirements
+As we outlined in the Profiles of Users, we have two main use cases for each of our
+users:
+- **Data exploration**: what happened with this experiment? Was it successful? 
+- **Data presentation**: how do I communicate the findings from this experiment?
+
+Data exploration means that we need to be able to facilitate a high level
+overview of the experiment as a whole as well as providing a way for users to
+drill into the detail of what happened in the experiment. Data presentation
+means that we need to produce high quality diagrams that can be edited to
+provide just the information required.
+
+To determine whether an experiment has been successful in this case is to find
+drug combinations that have synergy togther or have adversarial reactions.
+Synergy means that together they work better than either of them alone at the
+same concentration.  Adverity means the opposite: the drugs together at a
+certain concentration actually work less effectively than either by itself.
+
+We also want to optimise for dosage of the drug. The lower the dosage of the
+total drug combination, the lower the cost to produce that drug. Therefore it's
+not just raw efficacy that's desired, but a combination of low dosage and high
+efficacy. The dosage of drug combinations are generally compared using the
+Fractional Inhibitry Concentration Index (referred here simply as FIC) of that
+combination - a linear sum of the drug concentrations weighted according to the
+Minimum Inhibry Concentration (MIC). See Addendum A for calculating these
+values. A FIC which is smaller than 0.4 is seen to be synergistic and greater
+than 1 is seen as antagonistic. 
+
+At a high level, this means that success is determining the trends of
+combination of the dosages of the drugs. For example, we'd want to know whether
+increasing the dose of FA is in general more effective than increasing the dose
+of INH. We would also want to determine if there is any adverse reactions in the
+data as a whole - is there any particular dish where increasing dosage decreases
+effectiveness? Once particular points of interest have been identified, lower
+level data is required to reenforce.  
+
+### Ranked Visual Queries
+
+In terms of prioritisation, we thought that data exploration was more important
+than data presentation. The users in question have access to the raw data and
+are skilled enough to provide effective two dimensional visualisations but
+struggle with visualising high dimensional data. Therefore it's more important
+for us to provide a visualisation that allows them to explore the three
+dimensioanl data as they currently have no way to do this themselves.
+
+Below is a ranked list of visual queries, from most important to least
+important. Here, we define a drug combination as being most effective if it is
+the combination of drugs that inhibits the growth of TB with the lowest FIC.
+
+- Which drug combination is the most effective?
+- What, if any, drugs interacted antagonistically?
+- Which drug pairs were the most effective?
+- Which drug was most effective by itself? 
+- For a set concentration for a pair of drugs, what is the lowest dosage of the
+remaining drug such that it still inhibits the growth of TB?
+- As we increase the concentration of a drug, how does that generally affect the
+performance of the other drug combinations?
+
+## Design
+
+### Initial Design
+
+### Feedback and Responses
+
+### Walkthrough of Current Design
+
+### Motivation for Design
+
+## Analysis of Design
+
+## Conclusions
+
+## Future Work
+
+## Work Split
+
+## Bibliography
+
+[1] 
+Reference: Figure S2. Synergistic interaction between spectinomycin and bromperidol against M. tuberculosis. From Synergistic drug combinations for tuberculosis therapy identified by a novel high throughput screen. Ramón-García, S. et al.
+
+[2] Figure S1. Graphical representation of a Checkerboard Assay. From Synergistic drug combinations for tuberculosis therapy identified by a novel high throughput screen. Ramón-García, S. et al.
+
+[3] Automation Tool for Rapid Design of Space Systems, http://start1.jpl.nasa.gov/caseStudies/autoTool.cfm
+# Visualising Synergistic drug combinations for tuberculosis therapy
+
+[4] Parallel coordinate plot, Fisher's Iris data, http://en.wikipedia.org/wiki/Parallel_coordinates
+
+
 
 ## Our Ideas
 
