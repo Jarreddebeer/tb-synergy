@@ -23,13 +23,36 @@ threejsPlates.create = function(el, props, state) {
 };
 
 threejsPlates.update = function(el, state) {
-    this._init(state);
+
+    var data = this._filteredData(state);
+    this._init(data);
     this._animate();
 };
 
 // private helper methods
 
-threejsPlates._init = function(state) {
+threejsPlates._filteredData = function(state) {
+    var filteredData = [],
+        ranges = state.display_ranges;
+    state.data.forEach(function(datum) {
+        var addDatum = true;
+        for (var key in ranges) {
+            if (ranges.hasOwnProperty(key)) {
+               if (datum[key] < ranges[key][0] ||
+                     datum[key] > ranges[key][1]) {
+                 addDatum = false;
+                 break;
+               }
+            }
+        }
+        if(addDatum) {
+            filteredData.push(datum);
+        }
+    });
+    return filteredData;
+};
+
+threejsPlates._init = function(data) {
 
     var camScale = 1.00;
     var camVerticalOffset = 100;
@@ -45,13 +68,13 @@ threejsPlates._init = function(state) {
     this.pickingTexture = new THREE.WebGLRenderTarget(this.props.width, this.props.height);
     this.pickingTexture.generateMipmaps = false;
 
-    this.plates = this._extractPlateState(state.data);
+    this.plates = this._extractPlateState(data);
     this.drugA = Object.keys(this.plates);
-    this.drugB = this._extractColumnState(state.data, 'b');
-    this.drugC = this._extractColumnState(state.data, 'c');
+    this.drugB = this._extractColumnState(data, 'b');
+    this.drugC = this._extractColumnState(data, 'c');
 
     this._setLabels();
-    this._setPlateCells(state.data);
+    this._setPlateCells(data);
 
     // lighting and rendering
 
