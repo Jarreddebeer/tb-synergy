@@ -328,11 +328,15 @@ System.config({
   "map": {
     "bootstrap": "github:twbs/bootstrap@3.3.2",
     "d3": "github:mbostock/d3@3.5.5",
+    "jquery-ui": "github:components/jqueryui@1.11.4",
     "jsx": "github:floatdrop/plugin-jsx@1.0.1",
     "markdown": "npm:markdown@0.5.0",
     "react": "npm:react@0.12.2",
     "three": "npm:three@0.70.0",
     "three.regular.helvetiker": "npm:three.regular.helvetiker@1.0.0",
+    "github:components/jqueryui@1.11.4": {
+      "jquery": "github:components/jquery@2.1.3"
+    },
     "github:floatdrop/plugin-jsx@1.0.1": {
       "react-tools": "npm:react-tools@0.12.2"
     },

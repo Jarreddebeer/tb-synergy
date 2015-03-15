@@ -12,7 +12,9 @@ export default React.createClass({
     d3Chart.create(el, {
       width: 600,
       height: 400,
-      margins: {top: 20, right: 20, bottom: 50, left: 100},
+      margins: {top: 20, right: 80, bottom: 50, left: 100},
+      updatePlate: this.props.updatePlate,
+      updateSelectedPoint: this.props.updateSelectedPoint,
     }, this.getChartState());
   },
 
@@ -24,7 +26,8 @@ export default React.createClass({
   getChartState: function() {
     return {
       data: this.props.data,
-      display_ranges: this.props.display_ranges
+      display_ranges: this.props.display_ranges,
+      selected_point_index: this.props.selected_point_index,
     };
   },
 
