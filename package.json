@@ -33,6 +33,9 @@
       "three.regular.helvetiker": "npm:three.regular.helvetiker@^1.0.0"
     }
   },
+  "dependencies": {
+      "jspm": "^0.14.0"
+  },
   "devDependencies": {
     "connect": "^3.3.4",
     "gulp": "^3.8.11",
