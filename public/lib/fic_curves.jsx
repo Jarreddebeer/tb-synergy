@@ -5,8 +5,8 @@ export default React.createClass({
   componentDidMount: function() {
     var el = this.getDOMNode();
     d3Chart.create(el, {
-      width: 600,
-      height: 400,
+      width: 375,
+      height: 250,
       margins: {top: 20, right: 20, bottom: 50, left: 100},
       updateSelectedPoint: this.props.updateSelectedPoint
     }, this.getChartState());
@@ -33,7 +33,6 @@ export default React.createClass({
   render: function() {
     return (
       <div className="fic_curves">
-          <h2> Plate {this.props.selected_plate} </h2>
       </div>
     );
   }

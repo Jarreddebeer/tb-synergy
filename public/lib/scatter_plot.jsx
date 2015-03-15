@@ -10,8 +10,8 @@ export default React.createClass({
   componentDidMount: function() {
     var el = this.getDOMNode();
     d3Chart.create(el, {
-      width: 600,
-      height: 400,
+      width: 700,
+      height: 700,
       margins: {top: 20, right: 80, bottom: 50, left: 100},
       updatePlate: this.props.updatePlate,
       updateSelectedPoint: this.props.updateSelectedPoint,

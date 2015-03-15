@@ -99,6 +99,7 @@ d3Chart._filterNode = function(d, state) {
 };
 
 d3Chart.update = function(el, state) {
+    console.log("FIC: " + state.selected_point_index);
     var that = this;
     var data = this._filterToPlate(state);
     // Axes and scales

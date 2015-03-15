@@ -8,9 +8,23 @@ var threejsPlates = {};
 threejsPlates.create = function(el, props, state) {
 
     this.props = props;
+    this.props.colours = [
+        0xB2182B,
+        0xD6604D,
+        0xF4A582,
+        0xFDDBC7,
+        0xE0E0E0,
+        0xBABABA,
+        0x878787,
+        0x4D4D4D
+    ];
+    this.props.colour = d3.scale.quantile()
+                         .domain([0, 65000])
+                         .range(this.props.colours);
     this.mouse = new THREE.Vector2();
     this.cSize = 50;
     this.hSize = 200;
+    this.cellMeshes = [];
     this.pickingData = [];
 
     this.container = d3.select(el).append('canvas')
@@ -18,14 +32,20 @@ threejsPlates.create = function(el, props, state) {
       .attr("height", this.props.height + this.props.margins.top + this.props.margins.bottom);
     this.props.container = this.container;
 
+    // extract the concentrations -> plate/col/row mapping
+    var plates = this._extractPlateState(state.data);
+    this.drugA = Object.keys(plates);
+    this.drugB = this._extractColumnState(state.data, 'b');
+    this.drugC = this._extractColumnState(state.data, 'c');
+
+    this._init(state.data);
     this.update(el, state);
 
 };
 
 threejsPlates.update = function(el, state) {
-
-    var data = this._filteredData(state);
-    this._init(data);
+    // var data = this._filteredData(state);
+    this._updatePlateCellsVisibility(state);
     this._animate();
 };
 
@@ -59,19 +79,21 @@ threejsPlates._init = function(data) {
     this.camera = new THREE.OrthographicCamera( -camScale * this.props.width, camScale * this.props.width, camScale * this.props.height, -camScale * this.props.height, -500, 1000 );
     this.camera.position.x = 280;
     this.camera.position.y = this.hSize * 6 / 2 - camVerticalOffset; // height with 6 plates is 700
-    this.camera.position.z = 200;
+    this.camera.position.z = 100;
 
     this.scene = new THREE.Scene();
-    this.camera.lookAt(new THREE.Vector3(-5*this.cSize+80, 410 - camVerticalOffset, -4*this.cSize));
+    this.camera.lookAt(new THREE.Vector3(-5*this.cSize+80, 410 - camVerticalOffset, -4*this.cSize-100));
 
     this.pickingScene = new THREE.Scene();
     this.pickingTexture = new THREE.WebGLRenderTarget(this.props.width, this.props.height);
     this.pickingTexture.generateMipmaps = false;
 
+    /*
     this.plates = this._extractPlateState(data);
     this.drugA = Object.keys(this.plates);
     this.drugB = this._extractColumnState(data, 'b');
     this.drugC = this._extractColumnState(data, 'c');
+   */
 
     this._setLabels();
     this._setPlateCells(data);
@@ -86,10 +108,10 @@ threejsPlates._init = function(data) {
         antialias: true,
         alpha: true
     });
-    this.renderer.setPixelRatio( window.devicePixelRatio );
+    this.renderer.setPixelRatio( this.props.devicePixelRatio );
     this.renderer.setSize(this.props.width, this.props.height);
 
-    this.renderer.domElement.addEventListener('mousemove', this._onMouseMove);
+    // this.renderer.domElement.addEventListener('mousemove', this._onMouseMove);
 
 };
 
@@ -100,7 +122,7 @@ threejsPlates._animate = function() {
 };
 
 threejsPlates._render = function() {
-    this._pick();
+//    this._pick();
     this.renderer.render(this.scene, this.camera);
 };
 
@@ -132,71 +154,119 @@ this._onMouseMove = function(e) {
     this.mouse.y = e.clientY;
 };
 
+threejsPlates._updatePlateCellsVisibility = function(state) {
+
+    // filter ranges
+    var a = state.display_ranges.a;
+    var b = state.display_ranges.b;
+    var c = state.display_ranges.c;
+    var l = state.display_ranges.lumo;
+    var pn = state.display_ranges.plate_num;
+    var spi = state.selected_point_index;
+
+    var visible;
+    for (var i = 0; i < state.data.length; i++) {
+        var row = state.data[i];
+        this.cellMeshes[i].visible = !(
+            row.a < a[0] || row.a > a[1] ||
+            row.b < b[0] || row.b > b[1] ||
+            row.c < c[0] || row.c > c[1] ||
+            row.lumo < l[0] || row.lumo > l[1]
+        );
+        this.cellMeshes[i].material.opacity = 0.8;
+    }
+
+    if (spi >= 0) {
+        this.cellMeshes[spi].visible = true;
+        this.cellMeshes[spi].material.opacity = 1;
+    }
+};
+
+// only call this ONCE on init
 threejsPlates._setPlateCells = function(rows) {
 
-    var geometry = new THREE.Geometry();
-    var pickingGeometry = new THREE.Geometry();
+    // this.cellGeometry = new THREE.Geometry();
+    // var pickingGeometry = new THREE.Geometry();
 
-    var geom = new THREE.PlaneGeometry(this.cSize, this.cSize, 1);
-    var color = new THREE.Color();
-
+    // var color = new THREE.Color();
     var matrix = new THREE.Matrix4();
     var quaternion = new THREE.Quaternion();
 
     for (var i = 0; i < rows.length; i++) {
-
         var row = rows[i];
-        var colMultiplyer = 1 - (row.lumo / 65000);
 
-        if (colMultiplyer >= 0.01) {
-
-            var x = this.drugB[row.b];
-            var y = this.plates[row.a];
-            var z = this.drugC[row.c];
-
-            var position = new THREE.Vector3();
-            position.x = x * this.cSize;
-            position.y = y * this.hSize;
-            position.z = z * this.cSize;
-
-            var rotation = new THREE.Euler();
-            rotation.x = -1.57079633;
-
-            var scale = new THREE.Vector3();
-            scale.x = 1; scale.y = 1; scale.z = 1;
-
-            quaternion.setFromEuler(rotation, false);
-            matrix.compose(position, quaternion, scale);
-
-            applyVertexColors(geom, color.setHex(0x0000ff));
-            geometry.merge(geom, matrix);
-            //
-            applyVertexColors(geom, color.setHex(i));
-            pickingGeometry.merge(geom, matrix);
-
-            this.pickingData[i] = {
-                position: position,
-                rotation: rotation
-            };
-
-        }
-
-        var defaultMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, shading: THREE.FlatShading, vertexColors: THREE.VertexColors });
-        var pickingMaterial = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
-        var drawnObject = new THREE.Mesh(geometry, defaultMaterial);
-        this.scene.add(drawnObject);
-        this.pickingScene.add(new THREE.Mesh(pickingGeometry, pickingMaterial));
-
-        this.highlightBox = new THREE.Mesh(
+        var col = this.props.colour(row.lumo);
+        var mesh = new THREE.Mesh(
             new THREE.PlaneGeometry(this.cSize, this.cSize, 1),
-            new THREE.MeshBasicMaterial({color: 0xffff00})
+            new THREE.MeshBasicMaterial({color: col, shading: THREE.FlatShading})
         );
-        // this.scene.add(this.highlightBox);
+        mesh.matrixAutoUpdate = false;
+        mesh.rotationAutoUpdate = false;
+        mesh.material.opacity = 0.8;
+
+        var x = this.drugB[row.b];
+        var y = row.plate_num; // this.plates[row.a];
+        var z = this.drugC[row.c];
+
+        var position = new THREE.Vector3();
+        position.z = 7 * this.cSize - x * this.cSize;
+        position.y = y * this.hSize;
+        position.x = 9 * this.cSize - z * this.cSize;
+
+        var rotation = new THREE.Euler();
+        rotation.x = -1.57079633;
+
+        var scale = new THREE.Vector3();
+        scale.x = 1; scale.y = 1; scale.z = 1;
+
+        quaternion.setFromEuler(rotation, false);
+        matrix.compose(position, quaternion, scale);
+
+        // applyVertexColors(geom, color.setHex(col));
+        mesh.applyMatrix(matrix);
+
+        this.cellMeshes[i] = mesh;
+        this.scene.add(mesh);
+        // this.cellGeometry.merge(geom, matrix);
+        //
+        // applyVertexColors(geom, color.setHex(i));
+        // pickingGeometry.merge(geom, matrix);
+
+        /*
+        this.pickingData[i] = {
+            position: position,
+            rotation: rotation
+        };
+       */
+
+        /*
+        this.plateGeoms.push({
+            x: x,
+            y: y,
+            z: z,
+            geom: geom
+        });
+       */
 
     }
 
+//    var defaultMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, shading: THREE.FlatShading, vertexColors: THREE.VertexColors });
+    // var pickingMaterial = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
+    // var drawnObject = new THREE.Mesh(this.cellGeometry, defaultMaterial);
+    // this.scene.add(drawnObject);
+    // this.pickingScene.add(new THREE.Mesh(pickingGeometry, pickingMaterial));
+
+    /*
+    this.highlightBox = new THREE.Mesh(
+        new THREE.PlaneGeometry(this.cSize, this.cSize, 1),
+        new THREE.MeshBasicMaterial({color: 0xffff00})
+    );
+   */
+    // this.scene.add(this.highlightBox);
+
     // taken from http://threejs.org/examples/webgl_interactive_cubes_gpu.html
     // lines 93-103
+    /*
     function applyVertexColors(g, c) {
         g.faces.forEach( function( f ) {
             var n = ( f instanceof THREE.Face3 ) ? 3 : 4;
@@ -205,36 +275,42 @@ threejsPlates._setPlateCells = function(rows) {
             }
         } );
     }
+   */
 };
 
 threejsPlates._setLabels = function() {
 
-    this.geometry = new THREE.Geometry();
+    this.labelGeometry = new THREE.Geometry();
 
     // generate grids along with drugA concentration labels
+    var height;
     this._generateGrid(0);
+    for (var i = 1; i < 6; i++) {
+        height = i * this.hSize + 0.1;
+        this._generateGrid(height);
+    }
+
     for (var i = 1; i < this.drugA.length; i++) {
         var concentration = this.drugA[i];
-        var height = i * this.hSize + 0.1;
+        height = i * this.hSize + 0.1;
         var x = 10 * this.cSize + this.cSize/2;
-        this._generateGrid(height);
-        this._addTextLabel(concentration, x, height+20, 0);
+        this._addTextLabel(concentration, x, height+20, -2*this.cSize);
     }
 
     // generate axes labels
     this._addTextLabel("(0, 0, 0)", this.cSize*7+25, -50, this.cSize*7);
-    this._addTextLabel("A", -this.cSize, 2.5*this.hSize, this.cSize*9);
-    this._addTextLabel("B", this.cSize/2*10+this.cSize/2, 0, this.cSize*12);
-    this._addTextLabel("C", this.cSize*13, 0, this.cSize/2*10);
+    this._addTextLabel("A", -this.cSize, 2.5*this.hSize, this.cSize*7);
+    this._addTextLabel("B", this.cSize*13, 0, this.cSize/2*8);
+    this._addTextLabel("C", this.cSize/2*13+this.cSize/2, 0, this.cSize*12);
 
     // generate the 'volume' labels
     var volumeGeo = new THREE.Geometry();
-    var v1 = new THREE.Vector3(-this.cSize/2, 0, 8*this.cSize);
+    var v1 = new THREE.Vector3(2*this.cSize-this.cSize/2, 0, 8*this.cSize);
     var v2 = new THREE.Vector3(10*this.cSize-this.cSize/2, 0, 8*this.cSize);
-    var v3 = new THREE.Vector3(-this.cSize/2, 0, 10*this.cSize);
-    var v4 = new THREE.Vector3(10*this.cSize, 0, -this.cSize/2);
+    var v3 = new THREE.Vector3(2*this.cSize-this.cSize/2, 0, 10*this.cSize);
+    var v4 = new THREE.Vector3(10*this.cSize, 0, -this.cSize/2 - 2*this.cSize);
     var v5 = new THREE.Vector3(10*this.cSize, 0, 8*this.cSize-this.cSize/2);
-    var v6 = new THREE.Vector3(12*this.cSize-this.cSize/2, 0, -this.cSize/2);
+    var v6 = new THREE.Vector3(12*this.cSize-this.cSize/2, 0, -this.cSize/2 - 2*this.cSize);
     //
     volumeGeo.vertices.push(v1);
     volumeGeo.vertices.push(v2);
@@ -257,20 +333,20 @@ threejsPlates._setLabels = function() {
 
     // generate vertical axes
     // north
-    this.geometry.vertices.push( new THREE.Vector3( -this.cSize/2, 0, 0-this.cSize/2 ) );
-    this.geometry.vertices.push( new THREE.Vector3( -this.cSize/2, this.hSize*5, 0-this.cSize/2 ) );
+    this.labelGeometry.vertices.push( new THREE.Vector3( 2*this.cSize-this.cSize/2, 0,            -2*this.cSize-this.cSize/2 ) );
+    this.labelGeometry.vertices.push( new THREE.Vector3( 2*this.cSize-this.cSize/2, this.hSize*5, -2*this.cSize-this.cSize/2 ) );
     // south
-    this.geometry.vertices.push( new THREE.Vector3( 10*this.cSize-this.cSize/2, 0, 8*this.cSize-this.cSize/2 ) );
-    this.geometry.vertices.push( new THREE.Vector3( 10*this.cSize-this.cSize/2, this.hSize*5, 8*this.cSize-this.cSize/2 ) );
+    this.labelGeometry.vertices.push( new THREE.Vector3( 10*this.cSize-this.cSize/2, 0,            8*this.cSize-this.cSize/2 ) );
+    this.labelGeometry.vertices.push( new THREE.Vector3( 10*this.cSize-this.cSize/2, this.hSize*5, 8*this.cSize-this.cSize/2 ) );
     // east
-    this.geometry.vertices.push( new THREE.Vector3( 10*this.cSize-this.cSize/2, 0, 0-this.cSize/2 ) );
-    this.geometry.vertices.push( new THREE.Vector3( 10*this.cSize-this.cSize/2, this.hSize*5, 0-this.cSize/2 ) );
+    this.labelGeometry.vertices.push( new THREE.Vector3( 10*this.cSize-this.cSize/2, 0,            -2*this.cSize-this.cSize/2 ) );
+    this.labelGeometry.vertices.push( new THREE.Vector3( 10*this.cSize-this.cSize/2, this.hSize*5, -2*this.cSize-this.cSize/2 ) );
     // west
-    this.geometry.vertices.push( new THREE.Vector3( 0-this.cSize/2, 0, 8*this.cSize-this.cSize/2 ) );
-    this.geometry.vertices.push( new THREE.Vector3( 0-this.cSize/2, this.hSize*5, 8*this.cSize-this.cSize/2 ) );
+    this.labelGeometry.vertices.push( new THREE.Vector3( 2*this.cSize-this.cSize/2, 0,            8*this.cSize-this.cSize/2 ) );
+    this.labelGeometry.vertices.push( new THREE.Vector3( 2*this.cSize-this.cSize/2, this.hSize*5, 8*this.cSize-this.cSize/2 ) );
 
     var geoMaterial = new THREE.LineBasicMaterial( { color: 0x000000, opacity: 0.1 } );
-    var geoLines = new THREE.Line( this.geometry, geoMaterial, THREE.LinePieces );
+    var geoLines = new THREE.Line( this.labelGeometry, geoMaterial, THREE.LinePieces );
     this.scene.add(geoLines);
 
 };
@@ -305,15 +381,15 @@ threejsPlates._addTextLabel = function(theText, x, y, z) {
 };
 
 threejsPlates._generateGrid = function(height) {
-    for (var i = 0; i <= 7+1; i++) {
-        var x = i * this.cSize;
-        this.geometry.vertices.push( new THREE.Vector3( 0-this.cSize/2,    height, x-this.cSize/2) );
-        this.geometry.vertices.push( new THREE.Vector3( this.cSize*10-this.cSize/2, height, x-this.cSize/2) );
+    for (var i = 0; i <= 10; i++) {
+        var z = 10 * this.cSize - i * this.cSize;
+        this.labelGeometry.vertices.push( new THREE.Vector3( 9*this.cSize + this.cSize/2, height,   (7 * this.cSize + this.cSize/2) - z) );
+        this.labelGeometry.vertices.push( new THREE.Vector3( 1*this.cSize + (this.cSize/2), height, (7 * this.cSize + this.cSize/2) - z) );
     }
-    for (var j = 0; j <= 9+1; j++) {
-        var y = j * this.cSize;
-        this.geometry.vertices.push( new THREE.Vector3( y-this.cSize/2, height, 0-this.cSize/2 ) );
-        this.geometry.vertices.push( new THREE.Vector3( y-this.cSize/2, height, 8*this.cSize-this.cSize/2 ) );
+    for (var j = 0; j <= 8; j++) {
+        var x = 8 * this.cSize - j * this.cSize;
+        this.labelGeometry.vertices.push( new THREE.Vector3( x+2 * this.cSize - this.cSize/2, height, (-2*this.cSize)-this.cSize/2 ) );
+        this.labelGeometry.vertices.push( new THREE.Vector3( x+2 * this.cSize - this.cSize/2, height, 8*this.cSize-this.cSize/2 ) );
     }
 };
 

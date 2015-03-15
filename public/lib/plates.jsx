@@ -14,20 +14,22 @@ export default React.createClass({
       devicePixelRatio: window.devicePixelRatio,
       width: 450,
       height: 700,
-      margins: {top: 20, right: 20, bottom: 50, left: 100}
+      margins: {top: 20, right: 20, bottom: 50, left: 100},
+      updateSelectedPoint: this.props.updateSelectedPoint
     }, this.getChartState());
   },
 
   componentDidUpdate: function() {
     var el = this.getDOMNode();
-//    threejsPlates.update(el, this.getChartState());
+    threejsPlates.update(el, this.getChartState());
   },
 
   getChartState: function() {
     return {
         data: this.props.data,
-        display_ranges: this.props.display_ranges
-    }
+        display_ranges: this.props.display_ranges,
+        selected_point_index: this.props.select_point_index,
+    };
   },
 
   componentWillUnmount: function() {

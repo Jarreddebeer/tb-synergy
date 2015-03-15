@@ -34,7 +34,7 @@
     }
   },
   "dependencies": {
-      "jspm": "^0.14.0"
+    "jspm": "^0.14.0"
   },
   "devDependencies": {
     "connect": "^3.3.4",

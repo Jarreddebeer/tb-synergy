@@ -32,39 +32,75 @@ var DataDisplay = React.createClass({
     return ranges;
   },
 
+  getBestPoint: function(data) {
+    var point = null,
+      index = null;
+    this.props.data.forEach(function(datum, i) {
+      if (datum.lumo < 65000 && (!point || datum.fic < point.fic)) {
+        point = datum;
+        index = i;
+      }
+    });
+    return index;
+  },
+
   render: function() {
     return (
     <div>
+
         <div className="row">
-            <div className="col-sm-4" id="graph-1">
-                <Plate data={this.props.data} display_ranges={this.state.display_ranges} />
-            </div>
-            <div className="col-sm-8">
-                    <div className="row" id="graph-2">
-                        <ScatterPlot data={this.props.data}
-                            display_ranges={this.state.display_ranges}
-                            selected_point_index={this.state.selected_point_index}
-                            updatePlate={this.updatePlate}
-                            updateSelectedPoint={this.updateSelectedPoint}
-                            />
-                    </div>
-                    <div className="row" id="graph-3">
-                        <FicCurves data={this.props.data}
+
+            <div className="col-sm-4">
+
+                <div id="plates">
+                    <FicCurves data={this.props.data}
                         display_ranges={this.state.display_ranges}
                         selected_point_index={this.state.selected_point_index}
                         updateSelectedPoint={this.updateSelectedPoint}
                         selected_plate={this.state.selected_plate}/>
-                    </div>
+                </div>
+
+                <div id="3d-plates">
+                    <Plate data={this.props.data}
+                        display_ranges={this.state.display_ranges}
+                        select_point_index={this.state.selected_point_index}
+                        updateSelectedPoint={this.updateSelectedPoint}
+                        />
+                </div>
+
             </div>
-        </div>
-        <div className="row">
-            <div className="col-sm-12" id="filters">
-                <FilterControls data={this.props.data}
-                                 selected_plate={this.state.selected_plate}
+
+            <div className="col-sm-8">
+
+                <div className="row">
+                    <div className="col-sm-12">
+
+
+                        <div id="filters">
+                            <FilterControls data={this.props.data}
+                                selected_plate={this.state.selected_plate}
                                 display_ranges={this.state.display_ranges}
                                 updateDisplayRange={this.updateDisplayRange}
                                 updatePlate={this.updatePlate}
                                 keysToFilter={["lumo","a","b","c"]}/>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col-sm-12">
+                        <div id="scatterplot">
+                            <ScatterPlot data={this.props.data}
+                                display_ranges={this.state.display_ranges}
+                                selected_point_index={this.state.selected_point_index}
+                                updatePlate={this.updatePlate}
+                                updateSelectedPoint={this.updateSelectedPoint}
+                                />
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

@@ -6,20 +6,27 @@ export default React.createClass({
       var that = this;
       $(function() {
         that.props.keysToFilter.forEach(function(key) {
+            var orientation = (key == "c" || key == "lumo" || key == "a") ? 'vertical' : 'horizontal';
+            var start_display_range = that.props.display_ranges[key][0];
+            if (key == "lumo") {
+                start_display_range = 15000;
+            }
             $( "#slider-range-"+key ).slider({
+              orientation: orientation,
               range: true,
-              min: that.props.display_ranges[key][0],
+              min: start_display_range,
               max: that.props.display_ranges[key][1],
               step: 0.05,
-              values: [ that.props.display_ranges[key][0], that.props.display_ranges[key][1]],
+              values: [ start_display_range, that.props.display_ranges[key][1]],
               slide: function( event, ui ) {
                 that.props.updateDisplayRange(key, ui.values);
               }
             });
-            $( "#"+key+"-values").val(that.props.display_ranges[key][0] + " - "+ that.props.display_ranges[key][1]);
+            $( "#"+key+"-values").val(start_display_range + " - "+ that.props.display_ranges[key][1]);
         });
 
         $( "#slider-plate").slider({
+          orientation: "vertical",
           min: that.props.display_ranges.plate_num[0],
           max: that.props.display_ranges.plate_num[1],
           step: 1,
@@ -46,23 +53,19 @@ export default React.createClass({
   render: function() {
     return (
       <div className="filters">
-      {this.props.keysToFilter.map(function(key){
-        return (
-        <div key={key}>
-        <p>
-          <label for={key+"-values"}>{key} range:</label>
-          <input type="text" id={key+"-values"}></input>
-        </p>
-        <div id={"slider-range-"+key}></div> 
-        </div>)
+        <div id="plate-select" key={"plate"}>
+            <div id="slider-plate"></div>
+        </div>
+        {this.props.keysToFilter.map(function(key){
+          return (
+          <div id={"slider-"+key} key={key}>
+              <p>
+                <label for={key+"-values"}>{key}:</label>
+                <input readonly="readonly" type="text" id={key+"-values"}></input>
+              </p>
+              <div id={"slider-range-"+key}></div>
+          </div>)
         })}
-        <div key={"plate"}>
-        <p>
-          <label for="plate-value">Plate:</label>
-          <input type="text" id="plate-value"></input>
-        </p>
-        <div id="slider-plate"></div> 
-        </div>)
       </div>
     );
   }

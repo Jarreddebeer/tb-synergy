@@ -178,7 +178,7 @@ d3Chart.update = function(el, state) {
       .attr("x", -24)
       .attr("y", 9)
       .attr("dy", ".35em")
-      .text(function(d) { return "Plate number " + d + ": "; });
+      .text(function(d) { return "Plate " + d + " "; });
 };
 
 d3Chart._calcPosition = function(d, x, y) {
