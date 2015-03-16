@@ -457,65 +457,160 @@ cells on the plates.
 
 #### Overview
 
-The design should help the visual queries by composing the different diagrams in such a way that extracting
-visual information is easy. Inappropriately placed diagrams can compete against one another for
-visual attention and lead the eye away from critical data. Viewer's of film and animation generally require
-three seconds of exposure to a shot before understanding what's happening in it. Similarly, the design
-should allow the user to grasp the visual queries after three seconds of exposure to it, including how to
-interact with it.
+The design should help the visual queries by composing the different diagrams in
+such a way that extracting visual information is easy. Inappropriately placed
+diagrams can compete against one another for visual attention and lead the eye
+away from critical data. Viewer's of film and animation generally require three
+seconds of exposure to a shot before understanding what's happening in it.
+Similarly, the design should allow the user to grasp the visual queries after
+three seconds of exposure to it, including how to interact with it. A full
+screenshot of the design is present in Figure 15.
 
-The initial design had reserved four spaces in the layout for diagrams. During development it became
-clear that two of the diagrams would become obsolete: The horizontal FIC distance, and the Hyperbolic curve
-representing the 'Frontier' points. This wasn't seen as a problem, as we had decided to include an area
-for filters which would take the form of sliders and could easily replace the FIC distance diagram. The
-'Frontier' points were overlayed onto the plate diagram and so this had no effect on the layout if it were
-to be left out.
+
+<center>
+![alt text][design-final]
+
+**Figure 14**: Final implemented design
+</center>
+
+On the top left is a heatmap representing an individual plate. The more red a
+dish is, the higher the measured luminosity. The more black it is, the lower the
+measured luminosity. One can filter out ranges of cells for concentrations of
+INH and RIF using the filters alongside those axes. 
+
+On the bottom left is a 3D view of all heatmaps for all the plates. The filter
+on the right allows you to chose the plate highlighted for display on the top
+left.
+
+On the right is a scatter plot showing the effifacy of the various combinations.
+Each point is the FIC index of a drug and its luminosity. On the right, you can
+filter out points with luminosity between a certain threshold by moving the
+range slider.
 
 #### Mouse Interactions
 
-The mouse is the only form of interaction with the web page. Since it is a pointing device it is only
-able to focus on one point at any give time which could be problematic if the diagrams were isolated
-components - no visual relationships could be drawn to connect the information in the three diagrams.
-It was therefore necessary to highlight the pieces of information which related to what the user's
-mouse was focusing on at any given point in time and on any of the diagrams. We made use of mouse hover
-to identify which elements to highlight, and special care was taken with the implementation to make sure
-that all the components would respond to this event at the same time.
+The mouse is the only form of interaction with the web page. Since it is a
+pointing device it is only able to focus on one point at any give time which
+could be problematic if the diagrams were isolated components - no visual
+relationships could be drawn to connect the information in the three diagrams.
+It was therefore necessary to highlight the pieces of information which related
+to what the user's mouse was focusing on at any given point in time and on any
+of the diagrams. We made use of mouse hover to identify which elements to
+highlight, and special care was taken with the implementation to make sure that
+all the components would respond to this event at the same time. 
+
+In Figure 15, we can see this in action. On hover on either of the 2D plots, one
+gets a tooltip box showing the full information for that point. That point is
+then highlighted across all three diagrams. This is done using an animation
+changing that elements opacity, allowing the user to pick it out due to motion
+without sacraficing the information provided by its colour.
+
+<center>
+![alt text][interactions]
+
+**Figure 15**: Highlighting the combination which was most effective.
+</center>
 
 #### Filters
 
-The 2D scatterplot is very dense, containing points for every cell on all the plates. Making matters
-worse, most of the points are clumped together. This was our initial justification for filters:
-The user needed to be able to filter out ranges of data which were not relevant. The filters were
-necessary to assist with the visual queries, and should not be disconnected from the visual associations
-already provided by the diagrams. We chose to use range sliders to align with the axes and make use
-of their existing labelling and visual association.
+The 2D scatterplot is very dense, containing points for every cell on all the
+plates. Making matters worse, most of the points are clumped together. This was
+our initial justification for filters: The user needed to be able to filter out
+ranges of data which were not relevant. The filters were necessary to assist
+with the visual queries, and should not be disconnected from the visual
+associations already provided by the diagrams. We chose to use range sliders to
+align with the axes and make use of their existing labelling and visual
+association.
 
 <center>
 ![alt text][design-axes-label-association]
 
-**Figure 14**: Using axes labels to associate filters
+**Figure 15**: Using the filters to limit the data shown. Here we've filtered
+luminosity using the rightmost slider to eliminate combinations that did not
+inhibit TB growth  as well as using the sliders on the heat map to limit our
+search to the higher concentrations.
 </center>
 
-
 #### Answering Queries
-- Which drug combination is the most effective?
-- What, if any, drugs interacted antagonistically?
-- Which drug pairs were the most effective?
-- Which drug was most effective by itself? 
-- For a set concentration for a pair of drugs, what is the lowest dosage of the
-remaining drug such that it still inhibits the growth of TB?
-- As we increase the concentration of a drug, how does that generally affect the
-performance of the other drug combinations?
+*Which drug combination is the most effective?* This can be answered by finding
+the point with the lowest FIC Index that inhibited drug growth. Here, this means
+the leftmost point on the scatter plot that doesn't have a luminosity of 65000.
+
+*What, if any, drugs interacted antagonistically?* These are all points with a
+FIC index of greater than 1 that have a luminosity of 65000. You can read this
+straight off of the scatter plot.
+
+*Which drug pairs were the most effective?* Since drugs are paired according to
+slices on the plates, you can read this off of the 3D visualisation, drilling in
+using the heatmap. Alternatively, you can filter the data down to drug pairs
+using the filters and compare using the scatter plot.
+
+*Which drug was most effective by itself?* Here, you can filter out the other
+drugs using the filters and examine a drug individually using any of the
+diagrams.
+
+*For a set concentration for a pair of drugs, what is the lowest dosage of the
+remaining drug such that it still inhibits the growth of TB?* Use the filters to
+pick your concentrations and then use the heatmap to give an overview of the
+efficacy and the scatterplot to give quantifiable data.
+
+*As we increase the concentration of a drug, how does that generally affect the
+performance of the other drug combinations?* Here, you can iterate through the
+plates and view the affect on the heatmap for FA. For the other combinations,
+you can scan through the different levels of the 3D visualisation. 
 
 ### Motivation for Design
 
+#### Visualisation Design
+
+We have three separate visualisations: a heat map, a scatter plot and our 3D
+plate heat map. Here we justify the inclusion of each. 
+
+We had two broad classes of visual queries: low level and high level queries,
+with the low level queries more important than the high level. The low level
+queries involved quickly finding combinations that showed synergy and
+antagonisim, the high levels one to find patterns in the data. 
+
+The low level queries required being able to see all the data in way that
+allowed you to get the exact values. We wanted to use spatial positioning to
+show this as we're very good at comparing the relative positions of points in
+two space. This meant using a scatter plot. In order to do this, we have to
+reduce the dimensionality of our data which is why we reduced the concentrations
+to a FIC index. This had the advantage of making evaluating the efficacy of drug
+combinations easy.
+
+The scatter plot did not exist in isolation however and had to be connected with
+the plate based visualisations. To do this, we coded each point with colour and,
+in response to feedback in class, a symbol to indicate which plate it belonged
+to. We chose a set of symbols that were highlighted in lectures as being
+visually distinct and popular to make it easy for our users to discern the plate
+information from the points. Further, the interactive highlighting across the
+three visualisations makes it clear which points are being hovered over.
+
+For the high level queries, we needed a way for the user to be able to quickly
+discern patterns in the data. We thought that using colour for this would be
+effective - although we're bad at discerning relative ranges of colours, we're
+good at identifying different blocks of similar colours. As our data is mostly
+binary (the drug either worked or it didn't), you don't have to discern between
+more than a handful of colours if the luminosity for a point is encoded as a
+colour scale. Therefore a heatmap seemed like a valid way to visualise the data.
+
+As pointed out in class, a powerful addition to the inclusion of these
+visualisations would be the ability to filter. This allows the same
+visualisation to cater for a large array of visual queries while still
+remanining effective for the most important ones. In order for this filtering to
+be effective, we had to ensure that the user knew what data was removed else the
+filtering becomes unintuitive. To do this, we implemented a suggestion made in
+class: we implemented gridlines on our plates diagram showing clearly that the
+points were missing.
+
+#### Layout
 The visualisation is constrained to being viewed on a web page, and the user would expect a 2D layout divided
 into a grid. The layout and sizing of cells in the grid make up the key features of the design, and are instrumental
 in leading the eye to important visual information. The Golden ratio is well known in painting
 for leading the eye into the most interesting parts of the painting and holding the viewer’s attention. This is also
 known as the ‘Rule of thirds’, and for this reason both the initial design and the final implementation
-honour this rule by breaking the grid up into thirds, as seen in Figure 14.
-
+honour this rule by breaking the grid up into thirds, as seen in Figure 16.
 
 Elements with a portrait layout (i.e. are taller than they are wide), such as the 3D stacked plates, can be used to take
 up a third of the horizontal space and at least two thirds vertical space. Similarly, Elements with a portrait layout 
@@ -533,12 +628,12 @@ clearly had the most information and the largest value ranges. It is also used t
 point from the test, and needs to be very accurate and usable. The 3D stacked plates gave an overall, physical illustration
 of all the plates in the test, and the 2D plate gives similar information but in more detail. We chose to emphasise the
 2D scatterplot by maximising its grid space and using a square layout, taking up two thirds of the screen space. The other
-two diagrams would take up the remaining third, and the filters - being most flexible - would fill in. See figure 14.
+two diagrams would take up the remaining third, and the filters - being most flexible - would fill in. See Figure 16.
 
 <center>
 ![alt text][design-rule-of-thirds]
 
-**Figure 14**: Rule of thirds used in grid
+**Figure 16**: Rule of thirds used in grid
 </center>
 
 The sliders were labelled by the variables which they influenced, these are: The INH concentration, RIF concentration,
@@ -549,18 +644,52 @@ the filters on the opposite side of the axes so they would not compete for atten
 
 ## Analysis of Design
 
-<center>
-![alt text][design-final]
+### Strengths
 
-**Figure 15**: Final implemented design
-</center>
+The strenghts of the design have been covered in depth in the preceeding
+sections, so we will only briefly highlight them here.
 
-The filters, without their labels, are possibly too simplistic. Although their association with the axes is very strong,
-it is not visually clear that the vertical slider positioned to the right of the 3D stacked plates actually selects the
-active plate which is displayed in the 2D plate diagram above it. The slider is also aligned next to the labels for the FA
-concentration, which can cause an association between itself and FA concentrations - instead of the plate number. This
-confusion could be avoided by introducing a plate number label next to the plate itself, and a plate number heading for the
-2D plate diagram.
+The heat maps allow one to simulataneously get an overview of the entire data
+set at once as well as drill into some detail. This is further enhanced by the
+filters which allow one to remove unecessary detail and focus on the aspects of
+the data one wants to examine. 
+
+Our scatter plot allows one to very quickly answer the most important visual
+queries a researcher wants to know: is there synergy or antagonism in this
+assay. It also allows a researcher to identify trends in the data far more
+easily than the existing visualisations used.
+
+### Weaknesses
+
+The filters, without their labels, are possibly too simplistic. Although their
+association with the axes is very strong, it is not visually clear that the
+vertical slider positioned to the right of the 3D stacked plates actually
+selects the active plate which is displayed in the 2D plate diagram above it.
+The slider is also aligned next to the labels for the FA concentration, which
+can cause an association between itself and FA concentrations - instead of the
+plate number. This confusion could be avoided by introducing a plate number
+label next to the plate itself, and a plate number heading for the 2D plate
+diagram.
+
+While highlighting a point on the scatter plot is distinct, its corresponding
+highlhighting of the points on the other visualisations is not incredibly clear.
+A better choice would have been to had added a border or a texture to make it
+clear that the point was highlighted rather than using opaicty of a point.
+
+The colours of the 2D and 3D heatmaps are close but not identical. This could
+cause confusion if the user is not expecting it. Unfortunately this was a hard
+problem to solve due to problems with 3D perspective and could not be done
+during the implementation of this assignment.
+
+Our simplification to a FIC index rather than having the individual
+concentration means that we're possibly losing some possible power. While this
+simplification allowed for quick answers to some of the most important visual
+queries, it does make it harder to make comparisons for individual drug
+combainations as one has to rely on the heat maps.
+
+We are also tied to the physical association of the data. A more flexible design
+would allow you to slice the data into sections using any of the drug
+concentrations while ours is limited to plates of FA.
 
 ## Conclusions
 
@@ -643,12 +772,6 @@ growth but if they do so together, with a FIC index of 0.4, that would indicate
 that they substantially aid each others combatting of the virus in a synergistic
 way.
 
-### Useful bits
-
-Minimum inhibitory concentrations (MICs) are defined as the lowest concentration
-of an antimicrobial that will inhibit the visible growth of a microorganism
-after overnight incubation
-
 ## Bibliography
 
 [1] 
@@ -713,6 +836,7 @@ Antimicrobial agents and chemotherapy 54.2 (2010): 602-609.
 [example-4x4-plots]:/report/img/example-4x4-plots.png "Example star plot"
 [example-abc]:/report/img/example-abc.png "Example star plot"
 [spreadsheet-data]:/report/img/spreadsheet-data.png "Screenshot of spreadsheet data"
+[interactions]:/report/img/interactions.png "Interactions"
 
 </div>
 
