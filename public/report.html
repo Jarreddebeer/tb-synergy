@@ -31,32 +31,32 @@
 
 ### Problems with researching TB
 
-According to the (CDC)[http://www.cdc.gov/tb/statistics/], Tuberculosis (TB) one
-of the most deadly diseases, with a third of the world's population infected.
-It's an important disease in South Africa as it is the leading cause of death of
-those who have HIV/AIDS. As such, it is important that effective drugs for its
-treatment are discovered.
+According to the (CDC)[http://www.cdc.gov/tb/statistics/], Tuberculosis (TB) is
+one of the most deadly diseases, with a third of the world's population
+infected.  It's an important disease in South Africa as it is the leading cause
+of death of those who have HIV/AIDS. As such, it is important that effective
+drugs for its treatment are discovered.
 
 Developing drugs for TB is complex as it is treated with a combination of
 medications rather than one on its own. This means that during drug discovery,
 one cannot simply test the new drug on its own as it could have antagonistic
-reactions with other drugs. This means that in order to see if a drug is
-effective, you need to test it with a combination of drugs.
+reactions with other drugs. In order to see if a drug is effective, you need to
+test it with a combination of drugs.
 
-Usually this is done in the final stages of the drug's development in clinical
-trials on human subjects. This is problematic however, because at this stage
-large amounts of money has already been invested in the drug. If the drug has an
-antagonistic interaction with any of the others in the standard treatments, then
-it cannot be used. Recently some groups, such as UCT's
-[IDM](http://www.idm.uct.ac.za/) have been testing drug combinations in the lab,
-allowing much earlier detection of drug synergies and antagonisms. 
+Usually this is done in the final stages of the drug's development by
+incorporating it into clinical trials on human subjects. This is problematic
+however, because at this stage large amounts of money has already been invested
+in the drug. If the drug has an antagonistic interaction with any of the others
+in the standard treatments, then it cannot be used. Recently some groups, such
+as UCT's [IDM](http://www.idm.uct.ac.za/) have been testing drug combinations in
+the lab, allowing much earlier detection of drug synergies and antagonisms. 
 
-To compare two drugs, you use an assay depicted in Figure 1. For our data, an assay
-is a series of petri dishes, each which contain a certain amount of TB treated a
-certain concentration of two drugs. The concentration of the drugs in a given
-dish is given by its position in the grid. The TB microbes are treated with a
-compound which makes them give off light so you can measure a drug's efficacy by
-determining how much light a dish is giving off. 
+To compare two drugs, you can use an assay depicted in Figure 1. For our data,
+an assay is a series of petri dishes, each which contain a certain amount of TB
+treated a certain concentration of two drugs. The concentration of the drugs in
+a given dish is given by its position in the grid. The TB microbes are treated
+with a compound which makes them give off light so you can measure a drug's
+efficacy by determining how much light a dish is giving off. 
 
 <center>
 ![Figure 1][drug-interaction-plates]
@@ -65,9 +65,9 @@ determining how much light a dish is giving off.
 [1].
 </center>
 
-However, comparing two drugs is unfortunately not enough for emulating real
-life conditions - treatment of TB consists of at least three drugs. This is done
-with a 3D assay: you run multiple 2D assays each with a third drug with
+However, comparing two drugs is unfortunately not enough for emulating real life
+conditions - treatment of TB consists of at least three drugs. This comparison
+is done with a 3D assay: you run multiple 2D assays each with a third drug with
 different concentrations. This means that you essentially have four dimensional
 data: each of the three drug concentrations and the luminosity of the plate.
 
@@ -91,7 +91,7 @@ preceded it.
 
 The efficacy was measured with fluorescence intensities from a green fluorescent
 protein (GFP) reporter that is expressed in the bacterium. The maximum signal
-(i.e.  uninhibited growth) is set at a limit of 65000. 
+(i.e.  uninhibited growth) was capped at 65000. 
 
 The data is stored in spreadsheets depicted in Figure 2. Essentially, the data
 is a four tuple: three concentrations and a measure of effectiveness from the
@@ -160,13 +160,11 @@ data was sourced. Sourced from Digby Warner without attribution [2].
 
 Figure 4 shows a star chart. These are good at showing data with a large number
 of dimensions. Each point is a line and its value for each dimension is marked
-by its distance from the origin on each of the marked dimension lines. 
-
-This visualisation is effective at showing a small number of high dimensional
-points as seen in Figure 4. However, our data has hundreds of points which if
-displayed using this visualisation would make it hard to individual points and
-trends. As this is important for our visual queries, it is unsuitable for our
-current task.
+by its distance from the origin on each of the marked dimension lines. This
+visualisation is effective at showing a small number of high dimensional points
+as seen in Figure 4. However, our data has hundreds of points which if displayed
+using this visualisation would make it hard to individual points and trends. As
+this is important for our visual queries, it is unsuitable for our current task.
 
 <center>
 ![alt text][example-star-plot]
@@ -201,6 +199,7 @@ than just two.
 
 <center>
 ![alt text][example-4x4-plots]
+
 **Figure 6:** A scatter plot grid designed to visualise 4D data [5]
 </center>
 
@@ -211,7 +210,7 @@ conducting the experiment and also for a simpler analysis of the results. The
 three drugs can easily be represented in three dimensional (3D) space, and we
 began to explore 3D visualisations. Although these are a good starting point,
 one needs to be careful as to how the fourth variable, the intensity of the
-Green Fluorescent Protein (GRP) is represented.  A naive selection of 3D
+Green Fluorescent Protein is represented.  A naive selection of 3D
 visualisation may not support the visual query for detecting this intensity, but
 instead hide it. A common visualisation used to represent four dimensional data
 is a 3D surface diagram as seen in Figure 7 where colour is used on the surface
@@ -222,7 +221,7 @@ results for 3D Assay data.
 There are many pitfalls to this type of visualisation, one of them is that the
 surface occludes itself, hiding colours.  The other is that it is very difficult
 to determine the 3D coordinates of a point on the surface, and the value of the
-actual colour! Another pitfall is that the surface is a continuous interpolation
+actual colour. Another pitfall is that the surface is a continuous interpolation
 of the discrete quantities, and we cannot tell which quantities were actually
 used.
 
@@ -277,20 +276,20 @@ certain concentration actually work less effectively than either by itself.
 
 We also want to optimise for dosage of the drug. The lower the dosage of the
 total drug combination, the lower the cost to produce that drug. Therefore it's
-not just raw efficacy that's desired, but a combination of low dosage and high
-efficacy. The dosage of drug combinations are generally compared using the
-Fractional Inhibitry Concentration Index (referred here simply as FIC index) of that
-combination - a linear sum of the drug concentrations weighted according to the
-Minimum Inhibitory Concentration (MIC). See Addendum A for calculating these
-values. 
+not just inhibiting TB growth that's desired, but a combination of low dosage
+and inhibiting the growth . The dosage of drug combinations are generally
+compared using the Fractional Inhibitry Concentration Index (referred here
+simply as FIC index) of that combination - a linear sum of the drug
+concentrations weighted according to the Minimum Inhibitory Concentration (MIC).
+See Addendum A for calculating these values. 
 
 At a high level, this means that success is determining the trends of
 combination of the dosages of the drugs. For example, we'd want to know whether
 increasing the dose of FA is in general more effective than increasing the dose
-of INH. We would also want to determine if there is any antagonistic reactions in the
-data as a whole - is there any particular dish where increasing dosage decreases
-effectiveness? Once particular points of interest have been identified, lower
-level data is required to re-enforce.  
+of INH. We would also want to determine if there is any antagonistic reactions
+in the data as a whole - is there any particular dish where increasing dosage
+decreases effectiveness? Once particular points of interest have been
+identified, lower level data is required to re-enforce.  
 
 ### Ranked Visual Queries
 
@@ -341,17 +340,17 @@ visible against the background. This design clearly opposed our visual queries.
 </center>
 
 We began to realise that a single 3D diagram would not be sufficient in
-analysing the results. Two dimensional (2D) visualisations would likely be
+analysing the results. Two dimensional visualisations would likely be
 needed alongside a 3D diagram. This would allow us to keep the 3D visualisation
 simple and use it, for example, in visual queries that compare the results of
-neighbouring points and plates (i.e. the physical space!).  The 2D visualisation
+neighbouring points and plates (i.e. the physical space.).  The 2D visualisation
 could then be used for the variables most critical in decision making (i.e. the
 logic).
 
 We identified the two variables critical to analysing the results, which would
 be used in the 2D visualisation. These are the intensity of the Green
-Fluorescent Protein (i.e. the Luminosity) and the FIC index.  A 2D scatterplot would
-contain the visual queries needed to make accurate comparisons of the two
+Fluorescent Protein (i.e. the Luminosity) and the FIC index.  A 2D scatterplot
+would contain the visual queries needed to make accurate comparisons of the two
 variables, using all the cells. We are interested in the point which has the
 lowest FIC index and the lowest Luminosity: a point very close to the origin.
 This satisfies our logical decision making in identifying the best point from
@@ -464,8 +463,7 @@ away from critical data. Viewer's of film and animation generally require three
 seconds of exposure to a shot before understanding what's happening in it.
 Similarly, the design should allow the user to grasp the visual queries after
 three seconds of exposure to it, including how to interact with it. A full
-screen shot of the design is present in Figure 15.
-
+screen shot of the design is present in Figure 14.
 
 <center>
 ![alt text][design-final]
@@ -594,6 +592,8 @@ good at identifying different blocks of similar colours. As our data is mostly
 binary (the drug either worked or it didn't), you don't have to discern between
 more than a handful of colours if the luminosity for a point is encoded as a
 colour scale. Therefore a heat map seemed like a valid way to visualise the data.
+We chose a colour scale that had been verified as being successful in
+quantifiable health visualisations [10] - a red to grey heatmap.
 
 As pointed out in class, a powerful addition to the inclusion of these
 visualisations would be the ability to filter. This allows the same
@@ -639,7 +639,7 @@ two diagrams would take up the remaining third, and the filters - being most fle
 The sliders were labeled by the variables which they influenced, these are: The INH concentration, RIF concentration,
 Plate number, and Luminosity filters. Coincidentally, these ranges each appeared only once across the axes of the three different
 diagrams. These axes were already labeled, and the user would have established an association with them. It made sense to
-position the filters such that their interaction was described by the visual association to the axes! Care was taken to place
+position the filters such that their interaction was described by the visual association to the axes. Care was taken to place
 the filters on the opposite side of the axes so they would not compete for attention of the axes’ labels.
 
 ## Analysis of Design
@@ -814,29 +814,33 @@ combinations, Monte Carlo simulation analysis, and in vitro-in vivo correlation
 data for antifungal drug combinations against Aspergillus fumigatus."
 Antimicrobial agents and chemotherapy 54.2 (2010): 602-609.
 
-[graphical-representation-of-checkerboard-assay]:/report/img/graphical-representation-of-checkerboard-assay.png "Graphical representation of checkerboard assay"
-[drug-interaction-plates]:/report/img/drug-interaction-plates.png "Drug interaction plages"
-[early-design-3d-bar-chart]:/report/img/early-design-3d-bar-chart.png "Early stage design, 3d Bar chart"
-[early-design-plate-iterations]:/report/img/early-design-plate-iterations.png "Early stage design, iterating through stacked plates"
-[early-design-stacked-plates_01]:/report/img/early-design-stacked-plates_01.png "Early stage design, stacked plates 1"
-[early-design-stacked-plates_02]:/report/img/early-design-stacked-plates_02.png "Early stage design, stacked plates 2"
-[early-design-3d-scatterplot]:/report/img/early-design-3d-scatterplot.png "Early stage design, stacked plates 2"
-[sketch-plate-cells-scatterplot]:/report/img/sketch-plate-cells-scatterplot.png "Early stage design, stacked plates 2"
-[sketch-layout]:/report/img/sketch-layout.png "Sketch design for the layout"
-[early-implementation-plates-stacked_01]:/report/img/early-implementation-plates-stacked_01.png "Early implementation, stacked plates 1"
-[early-implementation-plates-stacked_02]:/report/img/early-implementation-plates-stacked_02.png "Early implementation, stacked plates 2"
-[design-axes-label-association]:/report/img/design-axes-label-association.png "Association with filters and axes labels"
-[design-rule-of-thirds]:/report/img/design-rule-of-thirds.png "Grid layout utilising rule of thirds"
-[design-final]:/report/img/design-final.png "Final implemented design"
-[example-4d-visualisation_01]:/report/img/example-4d-visualisation_01.png "Example 4d visualisation, 3d scatterplot with colour"
-[example-4d-visualisation_02]:/report/img/example-4d-visualisation_02.png "Example 4d visualisation, 3d scatterplot with tails"
-[example-4d-visualisation_03]:/report/img/example-4d-visualisation_03.png "Example 4d visualisation, 3d surface with colour"
-[example-parallel-coordinate-plot]:/report/img/example-parallel-coordinate-plot.png "Parallel coordinate plot"
-[example-star-plot]:/report/img/example-star-plot.png "Example star plot"
-[example-4x4-plots]:/report/img/example-4x4-plots.png "Example star plot"
-[example-abc]:/report/img/example-abc.png "Example star plot"
-[spreadsheet-data]:/report/img/spreadsheet-data.png "Screenshot of spreadsheet data"
-[interactions]:/report/img/interactions.png "Interactions"
+[10] Borkin, Michelle, et al. "Evaluation of artery visualizations for heart
+disease diagnosis." Visualization and Computer Graphics, IEEE Transactions on
+17.12 (2011): 2479-2488.
+
+[graphical-representation-of-checkerboard-assay]:report/img/graphical-representation-of-checkerboard-assay.png "Graphical representation of checkerboard assay"
+[drug-interaction-plates]:report/img/drug-interaction-plates.png "Drug interaction plages"
+[early-design-3d-bar-chart]:report/img/early-design-3d-bar-chart.png "Early stage design, 3d Bar chart"
+[early-design-plate-iterations]:report/img/early-design-plate-iterations.png "Early stage design, iterating through stacked plates"
+[early-design-stacked-plates_01]:report/img/early-design-stacked-plates_01.png "Early stage design, stacked plates 1"
+[early-design-stacked-plates_02]:report/img/early-design-stacked-plates_02.png "Early stage design, stacked plates 2"
+[early-design-3d-scatterplot]:report/img/early-design-3d-scatterplot.png "Early stage design, stacked plates 2"
+[sketch-plate-cells-scatterplot]:report/img/sketch-plate-cells-scatterplot.png "Early stage design, stacked plates 2"
+[sketch-layout]:report/img/sketch-layout.png "Sketch design for the layout"
+[early-implementation-plates-stacked_01]:report/img/early-implementation-plates-stacked_01.png "Early implementation, stacked plates 1"
+[early-implementation-plates-stacked_02]:report/img/early-implementation-plates-stacked_02.png "Early implementation, stacked plates 2"
+[design-axes-label-association]:report/img/design-axes-label-association.png "Association with filters and axes labels"
+[design-rule-of-thirds]:report/img/design-rule-of-thirds.png "Grid layout utilising rule of thirds"
+[design-final]:report/img/design-final.png "Final implemented design"
+[example-4d-visualisation_01]:report/img/example-4d-visualisation_01.png "Example 4d visualisation, 3d scatterplot with colour"
+[example-4d-visualisation_02]:report/img/example-4d-visualisation_02.png "Example 4d visualisation, 3d scatterplot with tails"
+[example-4d-visualisation_03]:report/img/example-4d-visualisation_03.png "Example 4d visualisation, 3d surface with colour"
+[example-parallel-coordinate-plot]:report/img/example-parallel-coordinate-plot.png "Parallel coordinate plot"
+[example-star-plot]:report/img/example-star-plot.png "Example star plot"
+[example-4x4-plots]:report/img/example-4x4-plots.png "Example star plot"
+[example-abc]:report/img/example-abc.png "Example star plot"
+[spreadsheet-data]:report/img/spreadsheet-data.png "Screenshot of spreadsheet data"
+[interactions]:report/img/interactions.png "Interactions"
 
 </div>
 
