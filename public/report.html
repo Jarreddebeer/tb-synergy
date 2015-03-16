@@ -46,7 +46,7 @@ effective, you need to test it with a combination of drugs.
 Usually this is done in the final stages of the drug's development in clinical
 trials on human subjects. This is problematic however, because at this stage
 large amounts of money has already been invested in the drug. If the drug has an
-antagonistic interaction with any of the others in the standard treatements, then
+antagonistic interaction with any of the others in the standard treatments, then
 it cannot be used. Recently some groups, such as UCT's
 [IDM](http://www.idm.uct.ac.za/) have been testing drug combinations in the lab,
 allowing much earlier detection of drug synergies and antagonisms. 
@@ -54,7 +54,7 @@ allowing much earlier detection of drug synergies and antagonisms.
 To compare two drugs, you use an assay depicted in Figure 1. For our data, an assay
 is a series of petri dishes, each which contain a certain amount of TB treated a
 certain concentration of two drugs. The concentration of the drugs in a given
-dish is given by its position in the grid. The TB microbials are treated with a
+dish is given by its position in the grid. The TB microbes are treated with a
 compound which makes them give off light so you can measure a drug's efficacy by
 determining how much light a dish is giving off. 
 
@@ -87,7 +87,7 @@ Five plates were set up, each with different concentrations of RIF down the
 columns and different concentrations of INH across the rows. FA was added at
 specific concentration for each of 5 plates, with the first getting no FA and
 the rest getting approximately double the concentration of the ones that
-preceeded it.
+preceded it.
 
 The efficacy was measured with fluorescence intensities from a green fluorescent
 protein (GFP) reporter that is expressed in the bacterium. The maximum signal
@@ -145,7 +145,7 @@ Curve.
 The largest limitation of these diagrams is that they only show 2D data and do
 extend naturally to 3D data. Even as a 2D visualisation, they have some problems
 for data exploration as FIC curves hide data when they don't need to. One can
-see a superset of information on the curve on the plates on the right as the
+see a super set of information on the curve on the plates on the right as the
 curve is simply the rightmost blue plate in each row. However the plates show
 information the curve does not - how well each drug performs in isolation and
 exactly how well each drug performs. 
@@ -155,14 +155,14 @@ exactly how well each drug performs.
 
 **Figure 3:** From left to right, an abstraction of assay data to show where the
 points on the FIC curve arise from, a FIC curve and the actual assay where the
-data was sourced. Sourced from Digby Warner without attributation [2].
+data was sourced. Sourced from Digby Warner without attribution [2].
 </center>
 
 Figure 4 shows a star chart. These are good at showing data with a large number
 of dimensions. Each point is a line and its value for each dimension is marked
 by its distance from the origin on each of the marked dimension lines. 
 
-This visualisation is effective at showing a small number of high dimesional
+This visualisation is effective at showing a small number of high dimensional
 points as seen in Figure 4. However, our data has hundreds of points which if
 displayed using this visualisation would make it hard to individual points and
 trends. As this is important for our visual queries, it is unsuitable for our
@@ -184,16 +184,16 @@ too many points for this to be displayed cleanly.
 <center>
 ![alt text][example-parallel-coordinate-plot]
 
-**Figure 5:** A parallel coordinate plot showing the dimesions of flower petals
+**Figure 5:** A parallel coordinate plot showing the dimensions of flower petals
 [4]
 </center>
 
 A less frequently used visualisation for multidimensional data is the
-scatterplot grid. Here, each scatterplot is the data for any pair of variables
+scatter plot grid. Here, each scatter plot is the data for any pair of variables
 corresponding to the rows and columns. Along the diagonal is the histogram for
 values on that particular dimension. 
 
-This visualisation shows the effectiveness of scatterplots for large amounts of
+This visualisation shows the effectiveness of scatter plots for large amounts of
 data. This helped inform our final design. However, we thought that while this
 was useful at ascertaining trends for pairs of variables, our most important
 visual queries requires us to compare points on three or four dimensions rather
@@ -201,7 +201,7 @@ than just two.
 
 <center>
 ![alt text][example-4x4-plots]
-**Figure 6:** A scatterplot grid designed to visualise 4D data [5]
+**Figure 6:** A scatter plot grid designed to visualise 4D data [5]
 </center>
 
 ### 3D Visualisations
@@ -211,11 +211,11 @@ conducting the experiment and also for a simpler analysis of the results. The
 three drugs can easily be represented in three dimensional (3D) space, and we
 began to explore 3D visualisations. Although these are a good starting point,
 one needs to be careful as to how the fourth variable, the intensity of the
-Green Flourescent Protein (GRP) is represented.  A naive selection of 3D
+Green Fluorescent Protein (GRP) is represented.  A naive selection of 3D
 visualisation may not support the visual query for detecting this intensity, but
 instead hide it. A common visualisation used to represent four dimensional data
 is a 3D surface diagram as seen in Figure 7 where colour is used on the surface
-itself to represent the fourth variable - much like a heatmap. We discovered
+itself to represent the fourth variable - much like a heat map. We discovered
 that this type of visualisation was in fact being used in reports to illustrate
 results for 3D Assay data.
 
@@ -232,13 +232,13 @@ used.
 **Figure 7**: A three dimensional plot with a fourth dimension shown as colour [5]
 </center>
 
-We began exploring other 3D visualisations, such as the 3D scatterplot in Figure
+We began exploring other 3D visualisations, such as the 3D scatter plot in Figure
 8. This visualisation is favourable to the 3D surface visualisation both because
 it does not occlude itself and because the scatter points are discrete.
 However, on close inspection there are a few potential issues with visual
 queries. The first is that the points are drawn without perspective (i.e from an
 orthographic projection) which provides no visual information about where the
-point lies on the scatterplot. This is complicated further when points are
+point lies on the scatter plot. This is complicated further when points are
 clustered together. One solution to this problem is to draw lines from the
 points to the planes of the axes as seen in Figure 9, however this adds too much
 noise to the image, hampering visual queries.
@@ -252,7 +252,7 @@ noise to the image, hampering visual queries.
 <center>
 ![alt text][example-4d-visualisation_02]
 
-**Figure 9**: A 3D scatter plot with droplines [5].
+**Figure 9**: A 3D scatter plot with drop lines [5].
 </center>
 
 ## Requirements and Associated Visual Queries
@@ -270,7 +270,7 @@ means that we need to produce high quality diagrams that can be edited to
 provide just the information required.
 
 To determine whether an experiment has been successful in this case is to find
-drug combinations that have synergy togther or have antagonistic reactions.
+drug combinations that have synergy together or have antagonistic reactions.
 Synergy means that together they work better than either of them alone at the
 same concentration.  Antagonism means the opposite: the drugs together at a
 certain concentration actually work less effectively than either by itself.
@@ -281,7 +281,7 @@ not just raw efficacy that's desired, but a combination of low dosage and high
 efficacy. The dosage of drug combinations are generally compared using the
 Fractional Inhibitry Concentration Index (referred here simply as FIC index) of that
 combination - a linear sum of the drug concentrations weighted according to the
-Minimum Inhibry Concentration (MIC). See Addendum A for calculating these
+Minimum Inhibitory Concentration (MIC). See Addendum A for calculating these
 values. 
 
 At a high level, this means that success is determining the trends of
@@ -290,7 +290,7 @@ increasing the dose of FA is in general more effective than increasing the dose
 of INH. We would also want to determine if there is any antagonistic reactions in the
 data as a whole - is there any particular dish where increasing dosage decreases
 effectiveness? Once particular points of interest have been identified, lower
-level data is required to reenforce.  
+level data is required to re-enforce.  
 
 ### Ranked Visual Queries
 
@@ -299,7 +299,7 @@ than data presentation. The users in question have access to the raw data and
 are skilled enough to provide effective two dimensional visualisations but
 struggle with visualising high dimensional data. Therefore it's more important
 for us to provide a visualisation that allows them to explore the three
-dimensioanl data as they currently have no way to do this themselves.
+dimensional data as they currently have no way to do this themselves.
 
 Below is a ranked list of visual queries, from most important to least
 important. Here, we define a drug combination as being most effective if it is
@@ -319,16 +319,16 @@ performance of the other drug combinations?
 
 ### Initial Designs
 
-We put together mockups for alternate 3D visualisations, one of which is
+We put together mock-ups for alternate 3D visualisations, one of which is
 depicted in Figure 10 as a 3D bar chart.  The two horizontal axes are for RIF and
 INH, while the height represents the GFP luminosity. A slider is used for
 interaction of the independent variable FA and the height of the bars animates
 accordingly to illustrate how the GFP luminosity is affected. This visualisation
 suffers severely from occlusion and was not explored further.  A follow up idea
 was to represent the concentrations of FA, RIF and INH as points on a 3D
-scatterplot with a green material, slightly blurred, to indicate the GFP
+scatter plot with a green material, slightly blurred, to indicate the GFP
 luminosity shown in Figure 10. As before, it was hard to tell where the points lay on the
-scatterplot, especially since they had varying degrees of luminosity and blur.
+scatter plot, especially since they had varying degrees of luminosity and blur.
 Another issue was that we were not interested in high luminosity values, but
 rather low luminosity values. These lower luminosity values would be barely
 visible against the background. This design clearly opposed our visual queries.
@@ -350,7 +350,7 @@ logic).
 
 We identified the two variables critical to analysing the results, which would
 be used in the 2D visualisation. These are the intensity of the Green
-Flourescent Protein (i.e. the Luminosity) and the FIC index.  A 2D scatterplot would
+Fluorescent Protein (i.e. the Luminosity) and the FIC index.  A 2D scatterplot would
 contain the visual queries needed to make accurate comparisons of the two
 variables, using all the cells. We are interested in the point which has the
 lowest FIC index and the lowest Luminosity: a point very close to the origin.
@@ -453,7 +453,7 @@ on the 3D visualisation as being the most optimum FIC index to Luminosity value,
 illustrates the use of colour highlighting to map points on the scatterplot to
 cells on the plates.
 
-### Walkthrough of Current Design
+### Walk through of Current Design
 
 #### Overview
 
@@ -464,7 +464,7 @@ away from critical data. Viewer's of film and animation generally require three
 seconds of exposure to a shot before understanding what's happening in it.
 Similarly, the design should allow the user to grasp the visual queries after
 three seconds of exposure to it, including how to interact with it. A full
-screenshot of the design is present in Figure 15.
+screen shot of the design is present in Figure 15.
 
 
 <center>
@@ -473,16 +473,16 @@ screenshot of the design is present in Figure 15.
 **Figure 14**: Final implemented design
 </center>
 
-On the top left is a heatmap representing an individual plate. The more red a
+On the top left is a heat map representing an individual plate. The more red a
 dish is, the higher the measured luminosity. The more black it is, the lower the
 measured luminosity. One can filter out ranges of cells for concentrations of
 INH and RIF using the filters alongside those axes. 
 
-On the bottom left is a 3D view of all heatmaps for all the plates. The filter
+On the bottom left is a 3D view of all heat maps for all the plates. The filter
 on the right allows you to chose the plate highlighted for display on the top
 left.
 
-On the right is a scatter plot showing the effifacy of the various combinations.
+On the right is a scatter plot showing the efficacy of the various combinations.
 Each point is the FIC index of a drug and its luminosity. On the right, you can
 filter out points with luminosity between a certain threshold by moving the
 range slider.
@@ -500,10 +500,10 @@ highlight, and special care was taken with the implementation to make sure that
 all the components would respond to this event at the same time. 
 
 In Figure 15, we can see this in action. On hover on either of the 2D plots, one
-gets a tooltip box showing the full information for that point. That point is
+gets a tool tip box showing the full information for that point. That point is
 then highlighted across all three diagrams. This is done using an animation
 changing that elements opacity, allowing the user to pick it out due to motion
-without sacraficing the information provided by its colour.
+without sacrificing the information provided by its colour.
 
 <center>
 ![alt text][interactions]
@@ -519,7 +519,7 @@ our initial justification for filters: The user needed to be able to filter out
 ranges of data which were not relevant. The filters were necessary to assist
 with the visual queries, and should not be disconnected from the visual
 associations already provided by the diagrams. We chose to use range sliders to
-align with the axes and make use of their existing labelling and visual
+align with the axes and make use of their existing labeling and visual
 association.
 
 <center>
@@ -542,7 +542,7 @@ straight off of the scatter plot.
 
 *Which drug pairs were the most effective?* Since drugs are paired according to
 slices on the plates, you can read this off of the 3D visualisation, drilling in
-using the heatmap. Alternatively, you can filter the data down to drug pairs
+using the heat map. Alternatively, you can filter the data down to drug pairs
 using the filters and compare using the scatter plot.
 
 *Which drug was most effective by itself?* Here, you can filter out the other
@@ -551,12 +551,12 @@ diagrams.
 
 *For a set concentration for a pair of drugs, what is the lowest dosage of the
 remaining drug such that it still inhibits the growth of TB?* Use the filters to
-pick your concentrations and then use the heatmap to give an overview of the
+pick your concentrations and then use the heat map to give an overview of the
 efficacy and the scatterplot to give quantifiable data.
 
 *As we increase the concentration of a drug, how does that generally affect the
 performance of the other drug combinations?* Here, you can iterate through the
-plates and view the affect on the heatmap for FA. For the other combinations,
+plates and view the affect on the heat map for FA. For the other combinations,
 you can scan through the different levels of the 3D visualisation. 
 
 ### Motivation for Design
@@ -569,7 +569,7 @@ plate heat map. Here we justify the inclusion of each.
 We had two broad classes of visual queries: low level and high level queries,
 with the low level queries more important than the high level. The low level
 queries involved quickly finding combinations that showed synergy and
-antagonisim, the high levels one to find patterns in the data. 
+antagonism, the high levels one to find patterns in the data. 
 
 The low level queries required being able to see all the data in way that
 allowed you to get the exact values. We wanted to use spatial positioning to
@@ -593,15 +593,15 @@ effective - although we're bad at discerning relative ranges of colours, we're
 good at identifying different blocks of similar colours. As our data is mostly
 binary (the drug either worked or it didn't), you don't have to discern between
 more than a handful of colours if the luminosity for a point is encoded as a
-colour scale. Therefore a heatmap seemed like a valid way to visualise the data.
+colour scale. Therefore a heat map seemed like a valid way to visualise the data.
 
 As pointed out in class, a powerful addition to the inclusion of these
 visualisations would be the ability to filter. This allows the same
 visualisation to cater for a large array of visual queries while still
-remanining effective for the most important ones. In order for this filtering to
+remaining effective for the most important ones. In order for this filtering to
 be effective, we had to ensure that the user knew what data was removed else the
 filtering becomes unintuitive. To do this, we implemented a suggestion made in
-class: we implemented gridlines on our plates diagram showing clearly that the
+class: we implemented grid lines on our plates diagram showing clearly that the
 points were missing.
 
 #### Layout
@@ -636,9 +636,9 @@ two diagrams would take up the remaining third, and the filters - being most fle
 **Figure 16**: Rule of thirds used in grid
 </center>
 
-The sliders were labelled by the variables which they influenced, these are: The INH concentration, RIF concentration,
+The sliders were labeled by the variables which they influenced, these are: The INH concentration, RIF concentration,
 Plate number, and Luminosity filters. Coincidentally, these ranges each appeared only once across the axes of the three different
-diagrams. These axes were already labelled, and the user would have established an association with them. It made sense to
+diagrams. These axes were already labeled, and the user would have established an association with them. It made sense to
 position the filters such that their interaction was described by the visual association to the axes! Care was taken to place
 the filters on the opposite side of the axes so they would not compete for attention of the axes’ labels.
 
@@ -646,12 +646,12 @@ the filters on the opposite side of the axes so they would not compete for atten
 
 ### Strengths
 
-The strenghts of the design have been covered in depth in the preceeding
+The strengths of the design have been covered in depth in the preceding
 sections, so we will only briefly highlight them here.
 
-The heat maps allow one to simulataneously get an overview of the entire data
+The heat maps allow one to simultaneously get an overview of the entire data
 set at once as well as drill into some detail. This is further enhanced by the
-filters which allow one to remove unecessary detail and focus on the aspects of
+filters which allow one to remove unnecessary detail and focus on the aspects of
 the data one wants to examine. 
 
 Our scatter plot allows one to very quickly answer the most important visual
@@ -672,11 +672,11 @@ label next to the plate itself, and a plate number heading for the 2D plate
 diagram.
 
 While highlighting a point on the scatter plot is distinct, its corresponding
-highlhighting of the points on the other visualisations is not incredibly clear.
+highlighting of the points on the other visualisations is not incredibly clear.
 A better choice would have been to had added a border or a texture to make it
-clear that the point was highlighted rather than using opaicty of a point.
+clear that the point was highlighted rather than using opacity of a point.
 
-The colours of the 2D and 3D heatmaps are close but not identical. This could
+The colours of the 2D and 3D heat maps are close but not identical. This could
 cause confusion if the user is not expecting it. Unfortunately this was a hard
 problem to solve due to problems with 3D perspective and could not be done
 during the implementation of this assignment.
@@ -685,7 +685,7 @@ Our simplification to a FIC index rather than having the individual
 concentration means that we're possibly losing some possible power. While this
 simplification allowed for quick answers to some of the most important visual
 queries, it does make it harder to make comparisons for individual drug
-combainations as one has to rely on the heat maps.
+combinations as one has to rely on the heat maps.
 
 We are also tied to the physical association of the data. A more flexible design
 would allow you to slice the data into sections using any of the drug
@@ -700,12 +700,12 @@ to easily answer a number of the high priority visual queries but did not answer
 some of the mid to low priority ones without having to incorporate filtering. 
 
 In order to be a successful, publishable visualisation for this type of data,
-more work is reccomended.
+more work is recommended.
 
 An important first step for future work for this visualisation would be
 verification that we have made a substantial improvement over the current
-techniques. This would probably take the form of a user evalutation and
-experimenetation.
+techniques. This would probably take the form of a user evaluation and
+experimentation.
 
 In order to be widely used, the implementation of this visualisation would need
 to improved substantially.  Right now, the design resides as a static
@@ -731,19 +731,19 @@ plots augmenting it.
 We split the work right down the middle, with each member having different
 responsibilities for each of the major areas of work.
 
-Jarred handled the design and implemention for the 3D visualisation while
-Steven was responsible for the design and implemention of the 2D visualisations.
-Jarred created the application scaffolding (a static javascript page) while
+Jarred handled the design and implementation for the 3D visualisation while
+Steven was responsible for the design and implementation of the 2D visualisations.
+Jarred created the application scaffolding (a static JavaScript page) while
 Steven worked on the interactive framework (allowing one to interact with
 elements on the page). Jarred finalised the page layout while Steven worked on
-colouring for the heatmap. Jarred wrote the sections on 3D visualisations while
-Steven did the sections of 2D, with both of us colloborating on the other
+colouring for the heat map. Jarred wrote the sections on 3D visualisations while
+Steven did the sections of 2D, with both of us collaborating on the other
 sections.
 
 This ended up working surprisingly well - we each chose sections we were
 passionate about and we think that the work shows it.
 
-## Apprendix A: Calculation of FIC Index
+## Appendix A: Calculation of FIC Index
 
 Here we give a brief summary of what FIC, MIC and FIC indices are and how they are
 calculated. 
@@ -765,11 +765,11 @@ To see why this is the case, consider a drug combination where two drugs each
 have a FIC of 0.5. This means that each by itself is at half the concentration
 normally needed to inhibit the growth of the microorganism itself. This means
 that together, with a FIC index of 1, they definitely should be able to inhibit
-the growth.  If they can't, then they must be combatting each other somehow and
+the growth.  If they can't, then they must be combating each other somehow and
 are therefore antagonistic. If we have two drugs which each have FICs of 0.2,
 then they're both far under what they would normally be required to inhibit drug
 growth but if they do so together, with a FIC index of 0.4, that would indicate
-that they substantially aid each others combatting of the virus in a synergistic
+that they substantially aid each others combating of the virus in a synergistic
 way.
 
 ## Bibliography
