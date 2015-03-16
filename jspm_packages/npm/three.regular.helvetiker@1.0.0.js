@@ -1,0 +1,1 @@
+module.exports = require("npm:three.regular.helvetiker@1.0.0/index");

@@ -1,0 +1,1 @@
+module.exports = require("github:novus/nvd3@1.7.1/build/nv.d3");

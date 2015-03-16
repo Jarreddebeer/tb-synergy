@@ -1,0 +1,53 @@
+{
+  "name": "three.regular.helvetiker",
+  "version": "1.0.0",
+  "description": "helvetiker regular typeface for three.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "three",
+    "three.js",
+    "font",
+    "typeface"
+  ],
+  "author": {
+    "name": "Andrei Kashcha"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anvaka/three.regular.helvetiker"
+  },
+  "gitHead": "745f477371c0d17687e778eb006b31763fe95c31",
+  "bugs": {
+    "url": "https://github.com/anvaka/three.regular.helvetiker/issues"
+  },
+  "homepage": "https://github.com/anvaka/three.regular.helvetiker",
+  "_id": "three.regular.helvetiker@1.0.0",
+  "_shasum": "e5ca718196f5ad7bec78de16956c7b2d6e4f2fdf",
+  "_from": ".",
+  "_npmVersion": "1.4.28",
+  "_npmUser": {
+    "name": "anvaka",
+    "email": "anvaka@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "anvaka",
+      "email": "anvaka@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "e5ca718196f5ad7bec78de16956c7b2d6e4f2fdf",
+    "tarball": "http://registry.npmjs.org/three.regular.helvetiker/-/three.regular.helvetiker-1.0.0.tgz"
+  },
+  "jspm": {},
+  "registry": "npm",
+  "format": "cjs",
+  "ignore": [
+    "node_modules"
+  ],
+  "dependencies": {}
+}
